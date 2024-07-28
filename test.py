@@ -7,18 +7,25 @@ def fixture():
     "Based on the database schema below and the question, create a SQL query that will return the desired result:
     DATABASE SCHEMA
     ---------------------
-    CREATE TABLE records (
-    id number,
-    sinusal_rhythm number,
-    severe_sepsis number,
-    hemodynamic_instability number,
-    social_security number,
-    septic_shock number,
-    age number,
+    CREATE TABLE nuclear_power_plants (
+    Id text,
+    Name text,
+    Latitude text,
+    Longitude text,
+    Country text,
+    Status text,
+    ReactorType text,
+    ReactorModel text,
+    ConstructionStartAt text,
+    OperationalFrom text,
+    OperationalTo text,
+    Capacity text,
+    LastUpdatedAt text,
+    Source text,
     );
     ---------------------
-    QUESTION: hemodynamically stable situation
-    CREATED SQL:
+    QUESTION: What are the top 10 countries with most number of operational plants?
+    CREATED SQL: 
     """
 
 torch.cuda.empty_cache()
