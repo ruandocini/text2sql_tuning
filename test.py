@@ -24,10 +24,7 @@ def fixture():
 peft_model_id = "ruandocini/llama31-8b-lora-sql"
 config = PeftConfig.from_pretrained(peft_model_id)
 model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, device_map='auto')
-tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
-
-print(config.base_model_name_or_path)
-raise Exception('stop')
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B")
 
 # Load the Lora model
 model = PeftModel.from_pretrained(model=model, model_id=peft_model_id, config=config)
