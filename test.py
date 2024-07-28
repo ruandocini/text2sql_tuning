@@ -23,8 +23,11 @@ def fixture():
 
 torch.cuda.empty_cache()
 
+peft_model_id = "samwit/bloom-7b1-lora-tagger"
+config = PeftConfig.from_pretrained(peft_model_id)
+
 model = AutoModel.from_pretrained("ruandocini/llama31-8b-lora-sql") 
-tokenizer = AutoTokenizer.from_pretrained("ruandocini/llama31-8b-lora-sql")
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
 batch = tokenizer(fixture(), return_tensors='pt')
 
