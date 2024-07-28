@@ -12,10 +12,11 @@ model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3.1-8B-Instruct",
     load_in_8bit=True,
     device_map='cuda',
-    access_token=access_token
-)
+å)
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B", token=access_token)
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B")
+
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B")
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -114,5 +115,4 @@ trainer.train()
 model.push_to_hub("ruandocini/llama31-8b-lora-sql",
                   use_auth_token=True,
                   commit_message="basic training",
-                  token=access_token,
                   private=True)
