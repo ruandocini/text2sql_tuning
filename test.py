@@ -23,7 +23,7 @@ def fixture():
 
 torch.cuda.empty_cache()
 
-peft_model_id = "samwit/bloom-7b1-lora-tagger"
+peft_model_id = "ruandocini/llama31-8b-lora-sql"
 config = PeftConfig.from_pretrained(peft_model_id)
 
 model = AutoModel.from_pretrained("ruandocini/llama31-8b-lora-sql") 
