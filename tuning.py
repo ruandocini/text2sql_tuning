@@ -11,7 +11,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0"
 model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3.1-8B-Instruct",
     load_in_8bit=True,
-    device_map='auto',
+    device_map='cuda',
     access_token=access_token
 )
 
