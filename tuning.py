@@ -79,10 +79,12 @@ print_trainable_parameters(model)
 #       result = json.loads(json_str)
 #       json_parsed.append(result)
 
-data = pd.read_csv("combined_train.csv").head(10000)
+data = pd.read_csv("combined_train.csv")
 # data = pd.DataFrame(json_parsed)
 data["train"] = ""
 # data.rename({"})
+
+print(data)
 
 data["train"] = [tokenizer(sample) for sample in data["train"]]
 
