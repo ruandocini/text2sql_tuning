@@ -1,6 +1,6 @@
 import torch
 from peft import PeftModel, PeftConfig
-from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel, LlamaForCausalLM
 
 def fixture():
     return """"
@@ -26,7 +26,7 @@ torch.cuda.empty_cache()
 peft_model_id = "ruandocini/llama31-8b-lora-sql"
 config = PeftConfig.from_pretrained(peft_model_id)
 
-model = AutoModel.from_pretrained("ruandocini/llama31-8b-lora-sql") 
+model = LlamaForCausalLM.from_pretrained("ruandocini/llama31-8b-lora-sql") 
 tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
 batch = tokenizer(fixture(), return_tensors='pt')
