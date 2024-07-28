@@ -79,7 +79,7 @@ print_trainable_parameters(model)
 #       result = json.loads(json_str)
 #       json_parsed.append(result)
 
-data = pd.read_csv("train_data/combined_train.csv").head(10000)
+data = pd.read_csv("combined_train.csv").head(10000)
 # data = pd.DataFrame(json_parsed)
 data["train"] = ""
 # data.rename({"})
@@ -91,11 +91,11 @@ trainer = transformers.Trainer(
     model=model,
     train_dataset=data['train'],
     args=transformers.TrainingArguments(
-        per_device_train_batch_size=10,
-        per_device_eval_batch_size=10,
+        per_device_train_batch_size=4,
+        per_device_eval_batch_size=4,
         gradient_accumulation_steps=10,
-        warmup_steps=50,
-        max_steps=200,
+        warmup_steps=100,
+        max_steps=600,
         learning_rate=2e-4,
         fp16=True,
         logging_steps=1,
