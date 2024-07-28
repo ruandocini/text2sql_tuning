@@ -3,6 +3,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0"
 import torch
 import torch.nn as nn
 import bitsandbytes as bnb
+import transformers
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 
 access_token = os.getenv("HUGGINGFACE_TOKEN")
@@ -11,7 +12,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0"
 model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3.1-8B-Instruct",
     load_in_8bit=True,
-    device_map='cuda',
+    device_map='auto',
 )
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B")
@@ -87,9 +88,6 @@ data["train"] = ""
 print(data)
 
 data["train"] = [tokenizer(sample) for sample in data["train"]]
-
-import transformers
-torch.cuda.empty_cache()
 
 trainer = transformers.Trainer(
     model=model,
