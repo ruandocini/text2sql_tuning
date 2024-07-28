@@ -27,7 +27,7 @@ model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, ret
 tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
 # Load the Lora model
-model = PeftModel.from_pretrained(model, peft_model_id)
+model = PeftModel.from_pretrained(peft_model_id, config=config, model=model)
 
 batch = tokenizer(fixture(), return_tensors='pt')
 
