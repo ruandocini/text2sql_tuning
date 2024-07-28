@@ -5,6 +5,9 @@ import torch.nn as nn
 import bitsandbytes as bnb
 import transformers
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
+import json
+import pandas as pd
+
 
 access_token = os.getenv("HUGGINGFACE_TOKEN")
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
@@ -66,10 +69,6 @@ print_trainable_parameters(model)
 # from datasets import load_dataset
 # data = load_dataset("Abirate/english_quotes")
 
-### new
-import json
-import pandas as pd
-
 # json_parsed = []
 
 # with open('./dev.jsonl', 'r') as json_file:
@@ -87,22 +86,20 @@ data["train"] = ""
 
 data["train"] = [tokenizer(sample) for sample in data["train"]]
 
-print(data["train"])
-raise Exception 
 
 trainer = transformers.Trainer(
     model=model,
     train_dataset=data['train'],
     args=transformers.TrainingArguments(
-        per_device_train_batch_size=3,
-        per_device_eval_batch_size=3,
+        per_device_train_batch_size=4,
+        per_device_eval_batch_size=4,
         gradient_accumulation_steps=5,
         warmup_steps=100,
         max_steps=200,
         learning_rate=2e-4,
         fp16=True,
         logging_steps=1,
-        output_dir='outputs'
+        output_dir='outputs',
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
 )
