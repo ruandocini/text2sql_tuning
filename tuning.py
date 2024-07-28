@@ -12,7 +12,7 @@ model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3.1-8B-Instruct",
     load_in_8bit=True,
     device_map='cuda',
-å)
+)
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B")
 
