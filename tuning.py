@@ -11,7 +11,7 @@ access_token = os.getenv("HUGGINGFACE_TOKEN")
 model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3.1-8B",
     load_in_8bit=True,
-    device_map="auto",
+    device_map="cuda",
     # quantization_config=bnb_config,
     trust_remote_code=True,
     token=access_token,
