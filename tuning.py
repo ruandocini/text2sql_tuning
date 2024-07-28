@@ -85,9 +85,10 @@ data = pd.read_csv("train_data/combined_train.csv").head(10000)
 data["train"] = ""
 # data.rename({"})
 
-print(data)
-
 data["train"] = [tokenizer(sample) for sample in data["train"]]
+
+print(data["train"])
+raise Exception 
 
 trainer = transformers.Trainer(
     model=model,
