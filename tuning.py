@@ -3,18 +3,16 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0"
 import torch
 import torch.nn as nn
 import bitsandbytes as bnb
-# from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 
 access_token = os.getenv("HUGGINGFACE_TOKEN")
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Meta-Llama-3.1-8B",
+    "meta-llama/Meta-Llama-3.1-8B-Instruct",
     load_in_8bit=True,
-    device_map="cuda",
-    # quantization_config=bnb_config,
-    trust_remote_code=True,
-    token=access_token,
+    device_map='auto',
+    access_token=access_token
 )
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B", token=access_token)
