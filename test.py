@@ -17,7 +17,7 @@ def fixture():
     age number,
     );
     ---------------------
-    QUESTION: patient over 18 years admitted in intensive care unit and having severe sepsis criteria or septic shock documented or suspected define as bone criteria
+    QUESTION: hemodynamically stable situation
     CREATED SQL:
     """
 
