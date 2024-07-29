@@ -103,7 +103,7 @@ trainer = transformers.Trainer(
 model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
 trainer.train()
 
-model.push_to_hub("ruandocini/llama31-8b-lora-sql",
+model.push_to_hub("ruandocini/llama31-8b-lora-sql2",
                   use_auth_token=True,
                   commit_message="basic training",
                   private=True)
