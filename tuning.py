@@ -14,7 +14,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Meta-Llama-3.1-8B",
-    load_in_8bit=True,
+    # load_in_8bit=True,
     device_map='auto',
 )
 
@@ -94,7 +94,6 @@ trainer = transformers.Trainer(
     train_dataset=data['train'],
     args=transformers.TrainingArguments(
         per_device_train_batch_size=4,
-        per_device_eval_batch_size=4,
         gradient_accumulation_steps=10,
         warmup_steps=100,
         max_steps=1000,
