@@ -7,6 +7,7 @@ import transformers
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 import json
 import pandas as pd
+from datasets import load_dataset
 
 
 access_token = os.getenv("HUGGINGFACE_TOKEN")
@@ -79,14 +80,8 @@ print_trainable_parameters(model)
 #       result = json.loads(json_str)
 #       json_parsed.append(result)
 
-data = pd.read_csv("combined_train.csv")
-# data = pd.DataFrame(json_parsed)
-data["train"] = ""
-# data.rename({"})
-
-print(data)
-
-data["train"] = [tokenizer(sample) for sample in data["train"]]
+data = load_dataset("csv", data_files={"train":["combined_train.csv"]})
+data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 
 
 trainer = transformers.Trainer(
