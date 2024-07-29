@@ -100,7 +100,6 @@ trainer = transformers.Trainer(
         max_steps=1000,
         learning_rate=2e-4,
         fp16=False,
-        bf16=True,
         logging_steps=1,
         output_dir='outputs',
     ),
