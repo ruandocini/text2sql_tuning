@@ -80,7 +80,7 @@ print_trainable_parameters(model)
 #       result = json.loads(json_str)
 #       json_parsed.append(result)
 
-data = load_dataset("csv", data_files={"train":["combined_train.csv"]})
+data = load_dataset("csv", data_files={"train":["bird_train.csv"]})
 data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 
 
