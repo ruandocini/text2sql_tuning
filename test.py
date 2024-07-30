@@ -42,6 +42,7 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 data = load_dataset("csv", data_files={"train":["bird_dev.csv"]})
 data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
+data = data["features"][['input_ids', 'attention_mask']]
 
 
 output_tokens = model.generate(**data, max_new_tokens=100)
