@@ -4,28 +4,23 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel, LlamaFo
 
 def fixture():
     return """"
+    train_example
     "Based on the database schema below and the question, create a SQL query that will return the desired result:
     DATABASE SCHEMA
     ---------------------
-    CREATE TABLE nuclear_power_plants (
-    Id text,
-    Name text,
-    Latitude text,
-    Longitude text,
-    Country text,
-    Status text,
-    ReactorType text,
-    ReactorModel text,
-    ConstructionStartAt text,
-    OperationalFrom text,
-    OperationalTo text,
-    Capacity text,
-    LastUpdatedAt text,
-    Source text,
+    CREATE TABLE records (
+    id number,
+    nutrient_absorption number,
+    systolic_blood_pressure_sbp number,
+    active_metabolic number,
+    hepatic_disease number,
+    surgery number,
+    diastolic_blood_pressure_dbp number,
+    gastrointestinal_disease number,
+    organ_failure number,
     );
     ---------------------
-    QUESTION: What are the top 10 countries with most number of operational plants?
-    CREATED SQL: 
+    QUESTION:  subject states that he / she has current hepatic disease.
     """
 
 torch.cuda.empty_cache()
