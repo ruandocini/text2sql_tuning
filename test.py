@@ -1,6 +1,7 @@
 import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel, LlamaForCausalLM
+from datasets import load_dataset
 
 def fixture():
     return """"
@@ -37,7 +38,12 @@ if tokenizer.pad_token is None:
 # Load the Lora model
 model = PeftModel.from_pretrained(model, peft_model_id)
 
-batch = tokenizer(fixture(), return_tensors='pt')
+# batch = tokenizer(fixture(), return_tensors='pt')
+
+data = load_dataset("csv", data_files={"train":["bird_dev.csv"]})
+data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
+
+raise ValueError(data)
 
 with torch.cuda.amp.autocast():
   output_tokens = model.generate(**batch, max_new_tokens=100)
