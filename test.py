@@ -43,11 +43,9 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 data = load_dataset("csv", data_files={"train":["bird_dev.csv"]})
 data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 
-for batch in data:
-    print(batch)
-    with torch.cuda.amp.autocast():
-        output_tokens = model.generate(**batch, max_new_tokens=100)
-        print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+
+output_tokens = model.generate(**data, max_new_tokens=100)
+print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
 
 # with torch.cuda.amp.autocast():
 #   output_tokens = model.generate(**batch, max_new_tokens=100)
