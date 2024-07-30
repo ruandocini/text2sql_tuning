@@ -2,6 +2,7 @@ import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel, LlamaForCausalLM
 from datasets import load_dataset
+import pandas as pd
 
 def fixture():
     return """"
@@ -40,13 +41,20 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = load_dataset("csv", data_files={"train":["bird_dev.csv"]})
-data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
-data = data["train"][['input_ids', 'attention_mask']]
+data = pd.read_csv("bird_dev.csv")
+input_data = [tokenizer(data, return_tensors='pt') for data in data["train_example"].tolist()]
+# data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
+# data = data["train"][['input_ids', 'attention_mask']]
 
+print(input_data)
 
-output_tokens = model.generate(**data, max_new_tokens=100)
-print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+for example in input_data:
+    print("example: ", example)
+    output_tokens = model.generate(**example, max_new_tokens=100)
+    print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+
+# output_tokens = model.generate(**data, max_new_tokens=100)
+# print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
 
 # with torch.cuda.amp.autocast():
 #   output_tokens = model.generate(**batch, max_new_tokens=100)
