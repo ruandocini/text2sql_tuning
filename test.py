@@ -59,7 +59,7 @@ predictions = {}
 
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-output_tokens = model.generate(**input_data, max_new_tokens=100)
+output_tokens = model.generate(input_data, max_new_tokens=100)
 
 output = tokenizer.decode(output_tokens, skip_special_tokens=True)
 
