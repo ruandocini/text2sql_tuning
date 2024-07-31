@@ -61,9 +61,13 @@ predictions = {}
 
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-output_tokens = model.generate(data["dev"], max_new_tokens=100)
+output_tokens = data.map(
+    lambda samples: model.generate(**samples, max_new_tokens=100),
+)
 
-output = tokenizer.decode(output_tokens, skip_special_tokens=True)
+final_output = data.map(
+    lambda samples: tokenizer.decode(samples[0], skip_special_tokens=True),
+)
 
 # with open("predictions.json", "w") as f:
 #     json.dump(predictions, f)
