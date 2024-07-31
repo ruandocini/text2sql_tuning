@@ -46,12 +46,13 @@ input_data = [tokenizer(data, return_tensors='pt') for data in data["train_examp
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
-print(input_data)
-
-for example in input_data:
-    print("example: ", example)
+for idx, example in enumerate(input_data):
+    print(f"Example {idx} of {len(input_data)}")
     output_tokens = model.generate(**example, max_new_tokens=100)
-    print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+    output = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
+    final_str = output.split('CREATED SQL: ')[1].split(' END OF QUESTION')[0]
+    print(final_str+"\n\t----- bird -----\t" + data["db_id"][idx])
+
 
 # output_tokens = model.generate(**data, max_new_tokens=100)
 # print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
