@@ -50,7 +50,7 @@ for idx, example in enumerate(input_data):
     print(f"Example {idx} of {len(input_data)}")
     output_tokens = model.generate(**example, max_new_tokens=100)
     output = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
-    final_str = output.split('CREATED SQL: ')[1].split(' END OF QUESTION')[0]
+    final_str = output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0]
     print(final_str+"\n\t----- bird -----\t" + data["db_id"][idx])
 
 
