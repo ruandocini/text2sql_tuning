@@ -42,8 +42,10 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv").head(10)
-input_data = [tokenizer(data, return_tensors='pt') for data in data["train_example"].tolist()]
+# data = pd.read_csv("bird_dev.csv").head(10)
+# input_data = [tokenizer(data, return_tensors='pt') for data in data["train_example"].tolist()]
+data = load_dataset("csv", data_files={"dev":["bird_dev.csv"]})
+data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
@@ -59,7 +61,7 @@ predictions = {}
 
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-output_tokens = model.generate(input_data, max_new_tokens=100)
+output_tokens = model.generate(data["dev"], max_new_tokens=100)
 
 output = tokenizer.decode(output_tokens, skip_special_tokens=True)
 
