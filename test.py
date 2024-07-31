@@ -27,7 +27,7 @@ def fixture():
 
 torch.cuda.empty_cache()
 
-peft_model_id = "ruandocini/llama31-8b-lora-sql"
+peft_model_id = "ruandocini/llama31-8b-lora-sql2"
 config = PeftConfig.from_pretrained(peft_model_id)
 model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
