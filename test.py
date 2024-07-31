@@ -55,7 +55,7 @@ for idx, example in enumerate(input_data):
     output = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
     final_str = output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0]
     db = data["db_id"][idx]
-    print(f"{final_str}+\n\t----- bird -----\t{db}")
+    # print(f"{final_str}+\n\t----- bird -----\t{db}")
 
     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
