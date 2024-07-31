@@ -42,25 +42,29 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv")
+data = pd.read_csv("bird_dev.csv").head(10)
 input_data = [tokenizer(data, return_tensors='pt') for data in data["train_example"].tolist()]
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
 predictions = {}
 
-for idx, example in enumerate(input_data):
-    print(f"Example {idx} of {len(input_data)}")
-    output_tokens = model.generate(**example, max_new_tokens=100)
-    output = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
-    final_str = output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0]
-    db = data["db_id"][idx]
-    # print(f"{final_str}+\n\t----- bird -----\t{db}")
+# for idx, example in enumerate(input_data):
+#     print(f"Example {idx} of {len(input_data)}")
+#     output_tokens = model.generate(**example, max_new_tokens=100)
+#     output = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
+#     final_str = output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0]
+#     db = data["db_id"][idx]
+#     # print(f"{final_str}+\n\t----- bird -----\t{db}")
 
-    predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
+#     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-with open("predictions.json", "w") as f:
-    json.dump(predictions, f)
+output_tokens = model.generate(**input_data, max_new_tokens=100)
+
+output = tokenizer.decode(output_tokens, skip_special_tokens=True)
+
+# with open("predictions.json", "w") as f:
+#     json.dump(predictions, f)
 
 # output_tokens = model.generate(**data, max_new_tokens=100)
 # print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
