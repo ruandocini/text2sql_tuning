@@ -54,9 +54,10 @@ for idx, example in enumerate(input_data):
     output_tokens = model.generate(**example, max_new_tokens=100)
     output = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
     final_str = output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0]
-    print(f"{final_str}+\n\t----- bird -----\t{data["db_id"][idx]}")
+    db = data["db_id"][idx]
+    print(f"{final_str}+\n\t----- bird -----\t{db}")
 
-    predictions[idx] = f"{final_str}+\n\t----- bird -----\t{data["db_id"][idx]}"
+    predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
 with open("predictions.json", "w") as f:
     json.dump(predictions, f)
