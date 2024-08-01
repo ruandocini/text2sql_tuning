@@ -43,7 +43,7 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv").head(10)
+data = pd.read_csv("bird_dev.csv").head(20)
 start = time.time()
 final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 raw_outputs = model.generate(**final_input, max_new_tokens=100)
@@ -51,9 +51,19 @@ decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), ski
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
-print(decoded_outputs[0])
+predictions = {}
 
-print(f"Time taken: {time.time() - start}")
+for batch in len(data)//10:
+    current_batch = data[batch*10:(batch+1)*10]
+    final_input = tokenizer(current_batch["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
+    raw_outputs = model.generate(**final_input, max_new_tokens=100)
+    decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
+    final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
+    db = [line["db_id"] for line in current_batch]
+    predictions.update({batch*10+idx: f"{info[0]}+\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
+
+print(predictions)
+print(f"Time taken: {time.time()-start}")
 
 # predictions = {}
 
