@@ -51,7 +51,7 @@ decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), ski
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
-print(decoded_outputs)
+print(decoded_outputs[0])
 
 print(f"Time taken: {time.time() - start}")
 
