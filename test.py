@@ -52,7 +52,7 @@ print(data)
 
 start = time.time()
 
-model.generate(data["input_ids"].to("cuda"), max_new_tokens=100)
+model.generate(data["final_input"].to("cuda"), max_new_tokens=100)
 
 print(f"Time taken: {time.time() - start}")
 
