@@ -61,7 +61,7 @@ predictions = {}
 
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-print(data["dev"][["input_ids", "attention_mask"]])
+print(data["dev"])
 raise Exception("stop")
 # output_tokens = data.map(
 #     lambda samples: model.generate(**samples["input_ids", "attention_mask"], max_new_tokens=100),
