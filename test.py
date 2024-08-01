@@ -63,11 +63,13 @@ predictions = {}
 
 selected_cols = data["dev"].select_columns(column_names=["input_ids", "attention_mask"])
 
-output_tokens = selected_cols.map(
-    lambda samples: model.generate(**samples["input_ids", "attention_mask"], max_new_tokens=100),
+print("selected the columns")
+
+selected_cols.map(
+    lambda samples: model.generate(**samples, max_new_tokens=100),
 )
 
-final_output = output_tokens.map(
+final_output = selected_cols.map(
     lambda samples: tokenizer.decode(samples[0], skip_special_tokens=True),
 )
 
