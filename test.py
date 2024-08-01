@@ -61,13 +61,13 @@ predictions = {}
 
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-print(data["dev"].select_columns(column_names=["input_ids", "attention_mask"]))
-raise Exception("stop")
-# output_tokens = data.map(
-#     lambda samples: model.generate(**samples["input_ids", "attention_mask"], max_new_tokens=100),
-# )
+selected_cols = data["dev"].select_columns(column_names=["input_ids", "attention_mask"])
 
-final_output = data.map(
+output_tokens = selected_cols.map(
+    lambda samples: model.generate(**samples["input_ids", "attention_mask"], max_new_tokens=100),
+)
+
+final_output = output_tokens.map(
     lambda samples: tokenizer.decode(samples[0], skip_special_tokens=True),
 )
 
