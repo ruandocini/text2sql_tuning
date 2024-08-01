@@ -53,7 +53,7 @@ decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), ski
 
 predictions = {}
 
-for batch in len(data)//10:
+for batch in range(len(data)//10):
     current_batch = data[batch*10:(batch+1)*10]
     final_input = tokenizer(current_batch["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
     raw_outputs = model.generate(**final_input, max_new_tokens=100)
