@@ -27,10 +27,6 @@ def fixture():
     QUESTION:  subject states that he / she has current hepatic disease.
     """
 
-def logger(example):
-    model.generate(**example, max_new_tokens=100)
-    print("Done")
-
 torch.cuda.empty_cache()
 
 peft_model_id = "ruandocini/llama31-8b-lora-sql2"
@@ -52,23 +48,13 @@ input_data = [tokenizer(data, return_tensors='pt') for data in data["train_examp
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
-predictions = {}
-
 start = time.time()
 
-predictions = [
-    logger(example)
-    for example in input_data
-]
-
-print(predictions)
+model.generate(**input_data["input_ids"].to("cuda"), max_new_tokens=100)
 
 print(f"Time taken: {time.time() - start}")
 
-# decoded = [
-#     tokenizer.decode(output_tokens[0], skip_special_tokens=True)
-#     for output_tokens in predictions
-# ]
+# predictions = {}
 
 # for idx, example in enumerate(input_data):
 #     print(f"Example {idx} of {len(input_data)}")
