@@ -52,7 +52,7 @@ print(final_input)
 
 start = time.time()
 
-final_input = torch.tensor(data["final_input"].values)
+final_input = torch.tensor(final_input.values)
 
 model.generate(final_input.to("cuda"), max_new_tokens=100)
 
