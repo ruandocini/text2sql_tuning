@@ -52,7 +52,9 @@ print(data)
 
 start = time.time()
 
-model.generate(data["final_input"].to("cuda"), max_new_tokens=100)
+final_input = torch.tensor(data["final_input"].values)
+
+model.generate(final_input.to("cuda"), max_new_tokens=100)
 
 print(f"Time taken: {time.time() - start}")
 
