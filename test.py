@@ -43,7 +43,7 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv").head(10)
+data = pd.read_csv("bird_dev.csv").head(100)
 final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
