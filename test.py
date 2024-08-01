@@ -63,6 +63,8 @@ predictions = [
     for example in input_data
 ]
 
+print(predictions)
+
 print(f"Time taken: {time.time() - start}")
 
 # decoded = [
