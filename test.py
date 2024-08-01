@@ -48,8 +48,6 @@ final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', pad
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
-print(final_input)
-
 start = time.time()
 
 model.generate(**final_input, max_new_tokens=100)
