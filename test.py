@@ -49,11 +49,10 @@ input_data = [tokenizer(data, return_tensors='pt') for data in data["train_examp
 # data = data["train"][['input_ids', 'attention_mask']]
 
 print(input_data)
-raise Exception
 
 start = time.time()
 
-model.generate(**input_data["input_ids"].to("cuda"), max_new_tokens=100)
+model.generate(input_data.to("cuda"), max_new_tokens=100)
 
 print(f"Time taken: {time.time() - start}")
 
