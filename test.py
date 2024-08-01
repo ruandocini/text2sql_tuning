@@ -62,7 +62,7 @@ predictions = {}
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
 output_tokens = data.map(
-    lambda samples: model.generate(**samples[["input_ids", "attention_mask"]], max_new_tokens=100),
+    lambda samples: model.generate(**samples["input_ids", "attention_mask"], max_new_tokens=100),
 )
 
 final_output = data.map(
