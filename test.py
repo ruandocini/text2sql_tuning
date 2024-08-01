@@ -53,6 +53,8 @@ input_data = [tokenizer(data, return_tensors='pt') for data in data["train_examp
 
 predictions = {}
 
+input_data = input_data.to(torch.device("cuda"))
+
 predictions = [
     logger(example)
     for example in input_data
