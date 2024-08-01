@@ -43,17 +43,18 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv").head(20)
-start = time.time()
-final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
-raw_outputs = model.generate(**final_input, max_new_tokens=100)
-decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
+data = pd.read_csv("bird_dev.csv").head(100)
+# final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
+# raw_outputs = model.generate(**final_input, max_new_tokens=100)
+# decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
 predictions = {}
 
 for batch in range(len(data)//10):
+    print(f"Batch {batch} of {len(data)//10}")
+    start = time.time()
     current_batch = data[batch*10:(batch+1)*10]
     final_input = tokenizer(current_batch["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
     raw_outputs = model.generate(**final_input, max_new_tokens=100)
@@ -61,9 +62,11 @@ for batch in range(len(data)//10):
     final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
     db = [line for line in current_batch["db_id"]]
     predictions.update({batch*10+idx: f"{info[0]}+\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
+    print(f"Time taken: {time.time()-start}")
 
-print(predictions)
-print(f"Time taken: {time.time()-start}")
+# print(predictions)
+with open("predictions.json", "w") as f:
+    json.dump(predictions, f)
 
 # predictions = {}
 
@@ -77,8 +80,6 @@ print(f"Time taken: {time.time()-start}")
 
 #     predictions[idx] = f"{final_str}+\n\t----- bird -----\t{db}"
 
-# with open("predictions.json", "w") as f:
-#     json.dump(predictions, f)
 
 # output_tokens = model.generate(**data, max_new_tokens=100)
 # print('\n\n', tokenizer.decode(output_tokens[0], skip_special_tokens=True))
