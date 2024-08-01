@@ -45,6 +45,7 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 data = pd.read_csv("bird_dev.csv").head(10)
 final_input = [tokenizer(data, return_tensors='pt') for data in data["train_example"].tolist()]
+final_input = [data.to("cuda") for data in final_input]
 # data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 # data = data["train"][['input_ids', 'attention_mask']]
 
@@ -52,9 +53,7 @@ print(final_input)
 
 start = time.time()
 
-final_input = torch.tensor(final_input)
-
-model.generate(final_input.to("cuda"), max_new_tokens=100)
+model.generate(final_input, max_new_tokens=100)
 
 print(f"Time taken: {time.time() - start}")
 
