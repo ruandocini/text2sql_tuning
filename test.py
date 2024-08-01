@@ -43,7 +43,7 @@ model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv").head(100)
+data = pd.read_csv("bird_dev.csv")
 # final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 # raw_outputs = model.generate(**final_input, max_new_tokens=100)
 # decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
