@@ -93,7 +93,7 @@ for ds_number in range(0,9):
             per_device_eval_batch_size=3,
             gradient_accumulation_steps=3,
             warmup_steps=100,
-            max_steps=300,
+            max_steps=110,
             learning_rate=2e-4,
             fp16=True,
             logging_steps=1,
