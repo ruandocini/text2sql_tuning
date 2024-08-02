@@ -61,7 +61,8 @@ for batch in range(len(data)//batch_size):
     raw_outputs = model.generate(**final_input, max_new_tokens=100)
     decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
     print(decoded_outputs)
-    final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
+    # final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
+    final_str = [output for output in decoded_outputs]
     db = [line for line in current_batch["db_id"]]
     predictions.update({batch*batch_size+idx: f"{info[0]}+\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
