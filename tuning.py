@@ -14,12 +14,12 @@ access_token = os.getenv("HUGGINGFACE_TOKEN")
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Meta-Llama-3.1-8B",
+    "mistralai/Mistral-7B-v0.3",
     load_in_8bit=True,
     device_map='auto',
 )
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B")
+tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.3")
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -93,7 +93,7 @@ for ds_number in range(0,9):
             per_device_eval_batch_size=3,
             gradient_accumulation_steps=3,
             warmup_steps=100,
-            max_steps=110,
+            max_steps=1000,
             learning_rate=2e-4,
             fp16=True,
             logging_steps=1,
@@ -104,7 +104,7 @@ for ds_number in range(0,9):
     model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
     trainer.train()
 
-model.push_to_hub("ruandocini/llama31-8b-lora-sql2",
+model.push_to_hub("ruandocini/Mistral-7B-v0.3-sql",
                   use_auth_token=True,
                   commit_message="basic training",
                   private=True)
