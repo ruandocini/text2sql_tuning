@@ -81,7 +81,7 @@ print_trainable_parameters(model)
 #       json_parsed.append(result)
 
 for ds_number in range(0,9):
-    data = load_dataset("csv", data_files={"train":[f"bird_train_{ds_number}.csv"]})
+    data = load_dataset("csv", data_files={"train":[f"train/bird_train_{ds_number}.csv"]})
     data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
 
 
