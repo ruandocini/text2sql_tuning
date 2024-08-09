@@ -53,8 +53,8 @@ data = pd.read_csv("bird_dev.csv")
 predictions = {}
 
 batch_size = 5
-for batch in range((len(data)//batch_size)+2):
-    print(f"Batch {batch} of {len(data)//batch_size}")
+for batch in range((len(data)//batch_size)+1):
+    print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
     current_batch = data[batch*batch_size:(batch+1)*batch_size]
     final_input = tokenizer(current_batch["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
