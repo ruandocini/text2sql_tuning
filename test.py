@@ -60,7 +60,7 @@ for batch in range(len(data)//batch_size):
     final_input = tokenizer(current_batch["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
     raw_outputs = model.generate(**final_input, max_new_tokens=100)
     decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
-    print(decoded_outputs)
+    # print(decoded_outputs)
     # final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
     final_str = [output for output in decoded_outputs]
     db = [line for line in current_batch["db_id"]]
