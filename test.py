@@ -53,7 +53,7 @@ data = pd.read_csv("bird_dev.csv")
 predictions = {}
 
 batch_size = 5
-for batch in range(len(data)//batch_size):
+for batch in range((len(data)//batch_size)+1):
     print(f"Batch {batch} of {len(data)//batch_size}")
     start = time.time()
     current_batch = data[batch*batch_size:(batch+1)*batch_size]
