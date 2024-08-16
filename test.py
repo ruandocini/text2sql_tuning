@@ -68,7 +68,7 @@ for batch in range((len(data)//batch_size)+1):
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
 
-    with open("predictions.json", "w") as f:
+    with open("predictions_without_tables_and_columns.json", "w") as f:
         json.dump(predictions, f)
 
 # predictions = {}
