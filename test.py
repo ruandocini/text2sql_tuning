@@ -29,17 +29,21 @@ def fixture():
 
 torch.cuda.empty_cache()
 
-peft_model_id = "ruandocini/llama31-8b-lora-sql2"
-config = PeftConfig.from_pretrained(peft_model_id)
-model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
-tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+# peft_model_id = "ruandocini/llama31-8b-lora-sql2"
+# config = PeftConfig.from_pretrained(peft_model_id)
+# model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
+# tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+
+raw_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+tokenizer = AutoTokenizer.from_pretrained(raw_model)
+model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
     model.resize_token_embeddings(len(tokenizer))
 
 # Load the Lora model
-model = PeftModel.from_pretrained(model, peft_model_id)
+# model = PeftModel.from_pretrained(model, peft_model_id)
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
@@ -67,12 +71,10 @@ for batch in range((len(data)//batch_size)+1):
     predictions.update({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
-
-    with open("predictions_without_tables_and_columns.json", "w") as f:
+    with open("predictions_base.json", "w") as f:
         json.dump(predictions, f)
 
 # predictions = {}
-
 # for idx, example in enumerate(input_data):
 #     print(f"Example {idx} of {len(input_data)}")
 #     output_tokens = model.generate(**example, max_new_tokens=100)
