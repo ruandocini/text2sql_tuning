@@ -71,7 +71,7 @@ for batch in range((len(data)//batch_size)+1):
     predictions.update({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
-    with open("predictions_broken_cols.json", "w") as f:
+    with open("predictions_broken_tables.json", "w") as f:
         json.dump(predictions, f)
 
 # predictions = {}
