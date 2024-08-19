@@ -5,38 +5,24 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel, LlamaFo
 from datasets import load_dataset
 import pandas as pd
 import json
+import argparse
 
-def fixture():
-    return """"
-    train_example
-    "Based on the database schema below and the question, create a SQL query that will return the desired result:
-    DATABASE SCHEMA
-    ---------------------
-    CREATE TABLE records (
-    id number,
-    nutrient_absorption number,
-    systolic_blood_pressure_sbp number,
-    active_metabolic number,
-    hepatic_disease number,
-    surgery number,
-    diastolic_blood_pressure_dbp number,
-    gastrointestinal_disease number,
-    organ_failure number,
-    );
-    ---------------------
-    QUESTION:  subject states that he / she has current hepatic disease.
-    """
+parser = argparse.ArgumentParser(description='What the program does')
+parser.add_argument("file", type=str)
+
+args = parser.parse_args()
+
 
 torch.cuda.empty_cache()
 
-# peft_model_id = "ruandocini/llama31-8b-lora-sql2"
-# config = PeftConfig.from_pretrained(peft_model_id)
-# model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
-# tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+peft_model_id = "ruandocini/llama31-8b-lora-sql2"
+config = PeftConfig.from_pretrained(peft_model_id)
+model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-raw_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
-tokenizer = AutoTokenizer.from_pretrained(raw_model)
-model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
+# raw_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+# tokenizer = AutoTokenizer.from_pretrained(raw_model)
+# model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -47,7 +33,7 @@ if tokenizer.pad_token is None:
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv("bird_dev.csv")
+data = pd.read_csv(f"dev/{args.file}.csv")
 # final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 # raw_outputs = model.generate(**final_input, max_new_tokens=100)
 # decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
@@ -71,7 +57,7 @@ for batch in range((len(data)//batch_size)+1):
     predictions.update({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
-    with open("predictions_broken_tables_and_columns.json", "w") as f:
+    with open(f"predictions_{args.file}.json", "w") as f:
         json.dump(predictions, f)
 
 # predictions = {}
