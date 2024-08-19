@@ -15,14 +15,14 @@ args = parser.parse_args()
 
 torch.cuda.empty_cache()
 
-peft_model_id = "ruandocini/llama31-8b-lora-sql2"
-config = PeftConfig.from_pretrained(peft_model_id)
-model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
-tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+# peft_model_id = "ruandocini/llama31-8b-lora-sql2"
+# config = PeftConfig.from_pretrained(peft_model_id)
+# model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
+# tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-# raw_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
-# tokenizer = AutoTokenizer.from_pretrained(raw_model)
-# model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
+raw_model = "mistralai/Mistral-Nemo-Instruct-2407"
+tokenizer = AutoTokenizer.from_pretrained(raw_model)
+model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
