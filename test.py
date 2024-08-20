@@ -20,7 +20,7 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-raw_model = "mistralai/Mistral-Nemo-Instruct-2407"
+raw_model = "mistralai/Codestral-22B-v0.1"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
 
