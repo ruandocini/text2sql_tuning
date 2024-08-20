@@ -22,7 +22,7 @@ torch.cuda.empty_cache()
 
 raw_model = "mistralai/Codestral-22B-v0.1"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
-model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_8bit=True, device_map='auto')
+model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_4bit=True, device_map='auto')
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -42,7 +42,7 @@ data = pd.read_csv(f"dev/{args.file}.csv")
 
 predictions = {}
 
-batch_size = 2
+batch_size = 1
 for batch in range((len(data)//batch_size)+1):
     print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
