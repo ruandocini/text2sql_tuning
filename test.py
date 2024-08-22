@@ -20,8 +20,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-model_name = "Codestral-22B"
-raw_model = "mistralai/Codestral-22B-v0.1"
+model_name = "Gemma2-27B-it"
+raw_model = "google/gemma-2-27b-it"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_4bit=True, device_map='auto')
 
@@ -43,7 +43,7 @@ data = pd.read_csv(f"dev/{args.file}.csv")
 
 predictions = {}
 
-batch_size = 10
+batch_size = 2
 for batch in range((len(data)//batch_size)+1):
     print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
