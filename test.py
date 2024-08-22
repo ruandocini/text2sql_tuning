@@ -20,7 +20,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-raw_model = "google/gemma-2-27b-it"
+model_name = "Codestral-22B"
+raw_model = "mistralai/Codestral-22B-v0.1"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_4bit=True, device_map='auto')
 
@@ -42,7 +43,7 @@ data = pd.read_csv(f"dev/{args.file}.csv")
 
 predictions = {}
 
-batch_size = 4
+batch_size = 10
 for batch in range((len(data)//batch_size)+1):
     print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
@@ -57,7 +58,7 @@ for batch in range((len(data)//batch_size)+1):
     predictions.update({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
-    with open(f"predictions_{args.file}.json", "w") as f:
+    with open(f"predictions/{model_name}/predictions_{args.file}.json", "w") as f:
         json.dump(predictions, f)
 
 # predictions = {}
