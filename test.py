@@ -35,7 +35,7 @@ if tokenizer.pad_token is None:
 # batch = tokenizer(fixture(), return_tensors='pt')
 
 data = pd.read_csv(f"dev/{args.file}.csv")
-data = data[data.index > 1019]
+data = data[data.index > 1030]
 # final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 # raw_outputs = model.generate(**final_input, max_new_tokens=100)
 # decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
@@ -44,7 +44,7 @@ data = data[data.index > 1019]
 
 predictions = {}
 
-batch_size = 4
+batch_size = 3
 for batch in range((len(data)//batch_size)+1):
     print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
