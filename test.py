@@ -20,8 +20,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-model_name = "Gemma2-9B-it"
-raw_model = "google/gemma-2-9b-it"
+model_name = "codegemma-7b-it"
+raw_model = "google/codegemma-7b-it"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_4bit=True, device_map='auto')
 
