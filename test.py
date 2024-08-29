@@ -35,7 +35,7 @@ if tokenizer.pad_token is None:
 # batch = tokenizer(fixture(), return_tensors='pt')
 
 data = pd.read_csv(f"dev/{args.file}.csv")
-data = data[data.index > 1024]
+data = data[data.index > 1018]
 # final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 # raw_outputs = model.generate(**final_input, max_new_tokens=100)
 # decoded_outputs = tokenizer.batch_decode(raw_outputs.detach().cpu().numpy(), skip_special_tokens=True)
@@ -56,7 +56,7 @@ for batch in range((len(data)//batch_size)+1):
     # final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
     final_str = [output for output in decoded_outputs]
     db = [line for line in current_batch["db_id"]]
-    predictions.update({batch*batch_size+idx+1024: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
+    predictions.update({batch*batch_size+idx+1018: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
     with open(f"predictions/{model_name}/predictions_{args.file}.json", "w") as f:
