@@ -56,7 +56,7 @@ for batch in range((len(data)//batch_size)+1):
     # final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
     final_str = [output for output in decoded_outputs]
     db = [line for line in current_batch["db_id"]]
-    predictions.update({batch*batch_size+idx+1019: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
+    predictions.update({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
     with open(f"predictions/{model_name}/predictions_{args.file}.json", "w") as f:
