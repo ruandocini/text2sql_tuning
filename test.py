@@ -44,7 +44,7 @@ data = pd.read_csv(f"dev/{args.file}.csv")
 
 predictions = {}
 
-batch_size = 10
+batch_size = 3
 for batch in range((len(data)//batch_size)+1):
     print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
