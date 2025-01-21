@@ -1,2 +1,5 @@
 *.csv
 *.json
+*.DS_Store
+*.sqlite
+*.sql

@@ -32,7 +32,6 @@ def mapper_loader() -> json:
         # data = pd.DataFrame(data)
         return data
 
-
 def table_reconstructor(
     columns: list,
     relevant_index: int,
@@ -114,13 +113,13 @@ def benchmark_reconstructor(tables: dict) -> dict:
 
 
 def example_builder(
-    databases: dict, database_id: str, question: str, generated_sql: str
+    databases: dict, database_id: str, question: str, generated_sql: str, evidence:str
 ) -> str:
     db = (
         f"Based on the database schema below and the question, create a SQL query that will return the desired result:\n{databases[database_id]}\n"
         ""
     )
-    question = f"QUESTION: {question}"
+    question = f"QUESTION: {question.replace(evidence, "")}"
     generated_sql = f"CREATED SQL: {generated_sql}"
     file_end = "\nEND OF QUESTION"
     command = "\nGenerate just the SQL code starting it with 'start_sql' and ending the sql with 'end_sql' nothing else is allowed on the response. Do not add any explanations or comments."
@@ -142,6 +141,7 @@ def dataset_builder(databases: dict, questions: list) -> str:
                     database_id=question["db_id"],
                     question=question["question"],
                     generated_sql=question["query"],
+                    evidence=question["evidence"],
                 ),
             }
             for question in questions
