@@ -229,11 +229,9 @@ def reconstruct(modification_type: list[str]):
 def reconstruct_default():
     reconstruct([])
 
-
 @app.command()
 def reconstruct_broken_columns_and_tables():
     reconstruct(["columns", "tables"])
-
 
 @app.command()
 def reconstruct_columns_broken():
@@ -243,7 +241,6 @@ def reconstruct_columns_broken():
 @app.command()
 def reconstruct_tables_broken():
     reconstruct(["tables"])
-
 
 if __name__ == "__main__":
     app()
