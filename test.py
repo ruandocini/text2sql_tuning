@@ -12,7 +12,7 @@ import pandas as pd
 import json
 import argparse
 
-parser = argparse.ArgumentParser(description='What the program does')
+parser = argparse.ArgumentParser(description="What the program does")
 parser.add_argument("file", type=str)
 
 args = parser.parse_args()
@@ -28,7 +28,9 @@ torch.cuda.empty_cache()
 model_name = "codegemma-7b-it"
 raw_model = "google/codegemma-7b-it"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
-model = AutoModelForCausalLM.from_pretrained(raw_model, return_dict=True, load_in_4bit=True, device_map='auto')
+model = AutoModelForCausalLM.from_pretrained(
+    raw_model, return_dict=True, load_in_4bit=True, device_map="auto"
+)
 
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({"pad_token": "[PAD]"})
@@ -50,12 +52,14 @@ data = pd.read_csv(f"dev/{args.file}.csv")
 predictions = {}
 
 batch_size = 3
-for batch in range((len(data)//batch_size)+1):
+for batch in range((len(data) // batch_size) + 1):
     print(f"Batch {batch} of {(len(data)//batch_size)+1}")
     start = time.time()
     current_batch = data[batch * batch_size : (batch + 1) * batch_size]
     final_input = tokenizer(
-        current_batch["train_example"].tolist(), return_tensors="pt", padding=True
+        current_batch["train_example"].tolist(),
+        return_tensors="pt",
+        padding=True,
     ).to("cuda")
     raw_outputs = model.generate(**final_input, max_new_tokens=100)
     decoded_outputs = tokenizer.batch_decode(
@@ -65,10 +69,19 @@ for batch in range((len(data)//batch_size)+1):
     # final_str = [output.split('CREATED SQL: ')[1].split('END OF QUESTION')[0] for output in decoded_outputs]
     final_str = [output for output in decoded_outputs]
     db = [line for line in current_batch["db_id"]]
-    predictions.update({batch*batch_size+idx+1018: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
+    predictions.update(
+        {
+            batch * batch_size
+            + idx
+            + 1018: f"{info[0]}\n\t----- bird -----\t{info[1]}"
+            for idx, info in enumerate(zip(final_str, db))
+        }
+    )
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
-    with open(f"predictions/{model_name}/predictions_{args.file}.json", "w") as f:
+    with open(
+        f"predictions/{model_name}/predictions_{args.file}.json", "w"
+    ) as f:
         json.dump(predictions, f)
 
 # predictions = {}

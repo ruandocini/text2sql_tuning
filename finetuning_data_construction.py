@@ -7,6 +7,7 @@ import typer
 
 app = typer.Typer()
 
+
 def questions_loader(specific_dataset: str) -> json:
     with open(f"data/{specific_dataset}/dev.jsonl") as f:
         data = [json.loads(line) for line in f]
@@ -32,6 +33,7 @@ def mapper_loader() -> json:
         # data = pd.DataFrame(data)
         return data
 
+
 def table_reconstructor(
     columns: list,
     relevant_index: int,
@@ -47,10 +49,12 @@ def table_reconstructor(
         for foreign_key_position, reference_key in foreign_keys
     }
     column_absolute_index_mapper = {
-        table_idx: table_name[1] for table_idx, table_name in enumerate(columns)
+        table_idx: table_name[1]
+        for table_idx, table_name in enumerate(columns)
     }
     table_absolute_index_mapper = {
-        table_idx: table_name[0] for table_idx, table_name in enumerate(columns)
+        table_idx: table_name[0]
+        for table_idx, table_name in enumerate(columns)
     }
     table_name_mapper = {
         table_idx: table_name for table_idx, table_name in enumerate(tables)
@@ -64,7 +68,9 @@ def table_reconstructor(
                 primary_key = "PRIMARY KEY " + "(" + column + "),\n"
             if absolute_list_index in foreign_key_mapper.keys():
                 reference_to_table = table_name_mapper[
-                    table_absolute_index_mapper[foreign_key_mapper[absolute_list_index]]
+                    table_absolute_index_mapper[
+                        foreign_key_mapper[absolute_list_index]
+                    ]
                 ]
                 foreign_key += (
                     "FOREIGN KEY "
@@ -113,7 +119,11 @@ def benchmark_reconstructor(tables: dict) -> dict:
 
 
 def example_builder(
-    databases: dict, database_id: str, question: str, generated_sql: str, evidence:str
+    databases: dict,
+    database_id: str,
+    question: str,
+    generated_sql: str,
+    evidence: str,
 ) -> str:
     db = (
         f"Based on the database schema below and the question, create a SQL query that will return the desired result:\n{databases[database_id]}\n"
@@ -160,15 +170,17 @@ def map_tables(mapper: dict, database: dict) -> Tuple[dict, dict]:
     return database, mapper_position_table
 
 
-def map_columns(mapper: dict, mapper_position_table: dict, database: dict) -> dict:
+def map_columns(
+    mapper: dict, mapper_position_table: dict, database: dict
+) -> dict:
     new_columns_names = []
     new_columns_names.append(database["column_names_original"][0])
     for table in database["column_names_original"][1:]:
         position = [
             table[0],
-            mapper[database["db_id"]]["columns"][mapper_position_table[table[0]]][
-                table[1]
-            ],
+            mapper[database["db_id"]]["columns"][
+                mapper_position_table[table[0]]
+            ][table[1]],
         ]
         new_columns_names.append(position)
     database["column_names_original"] = new_columns_names
@@ -206,7 +218,9 @@ def reconstruct(modification_type: list[str]):
 
     if "tables" in modification_type:
         for idx, broken_columns in enumerate(mapped_tables):
-            tables[idx]["table_names_original"] = broken_columns["table_names_original"]
+            tables[idx]["table_names_original"] = broken_columns[
+                "table_names_original"
+            ]
 
     databases = benchmark_reconstructor(tables)
     builded_dataset = dataset_builder(databases, questions)
@@ -222,16 +236,20 @@ def reconstruct(modification_type: list[str]):
 
     print(csv_name)
 
-    builded_dataset.to_csv(f"data_modified/{dataset}_{csv_name}.csv", index=False)
+    builded_dataset.to_csv(
+        f"data_modified/{dataset}_{csv_name}.csv", index=False
+    )
 
 
 @app.command()
 def reconstruct_default():
     reconstruct([])
 
+
 @app.command()
 def reconstruct_broken_columns_and_tables():
     reconstruct(["columns", "tables"])
+
 
 @app.command()
 def reconstruct_columns_broken():
@@ -241,6 +259,7 @@ def reconstruct_columns_broken():
 @app.command()
 def reconstruct_tables_broken():
     reconstruct(["tables"])
+
 
 if __name__ == "__main__":
     app()

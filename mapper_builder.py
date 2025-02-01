@@ -41,14 +41,18 @@ def non_meaningful_table_name(db_mapper: dict) -> dict:
     return table_mapping
 
 
-def apply_table_modification(db_path: str, old_table_name: str, new_table_name: str):
+def apply_table_modification(
+    db_path: str, old_table_name: str, new_table_name: str
+):
 
     if old_table_name != "sqlite_sequence":
         conn = sqlite3.connect(db_path)
         print(db_path)
         cursor = conn.cursor()
 
-        mod_table_name = f'ALTER TABLE "{old_table_name}" RENAME TO "{new_table_name}";'
+        mod_table_name = (
+            f'ALTER TABLE "{old_table_name}" RENAME TO "{new_table_name}";'
+        )
         # enable_mod = ' PRAGMA writable_schema=ON;'
 
         # print(mod_table_name)
@@ -86,7 +90,8 @@ def save_sql_changes(questions: list, saving_path: str):
     # print(json_questions_dev.replace('dev.json','dev.sql'))
     with open(saving_path, "w") as f:
         only_golden_sqls = [
-            question["SQL"] + "\t" + question["db_id"] for question in questions
+            question["SQL"] + "\t" + question["db_id"]
+            for question in questions
         ]
         # print(only_golden_sqls)
         f.write("\n".join(only_golden_sqls))
@@ -110,11 +115,15 @@ def alter_table_json(source_database: dict, saving_path: str):
         json.dump(source_database, f, indent=4)
 
 
-def alter_question_json(source_questions: dict, saving_path: str, table_mapping: dict):
+def alter_question_json(
+    source_questions: dict, saving_path: str, table_mapping: dict
+):
     # for record in table_mapping.to_dict(orient='records'):
 
     for question in source_questions:
-        for old_table_name, new_table_name in table_mapping[question["db_id"]].items():
+        for old_table_name, new_table_name in table_mapping[
+            question["db_id"]
+        ].items():
             question["SQL"] = question["SQL"].replace(
                 " " + old_table_name + " ", " " + new_table_name + " "
             )
@@ -175,7 +184,9 @@ if __name__ == "__main__":
                     ] = "column_" + str(counter)
                     counter += 1
 
-            mapper_of_columns[database["db_id"]]["tables"][table] = "table_" + str(idx)
+            mapper_of_columns[database["db_id"]]["tables"][table] = (
+                "table_" + str(idx)
+            )
 
     # print(mapper_of_columns["movielens"])
 

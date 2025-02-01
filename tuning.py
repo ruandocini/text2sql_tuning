@@ -88,13 +88,15 @@ print_trainable_parameters(model)
 #       json_parsed.append(result)
 
 # for ds_number in range(0,3):
-data = load_dataset("csv", data_files={"train":[f"train/bird_train.csv"]})
-data = data.map(lambda samples: tokenizer(samples['train_example']), batched=True)
+data = load_dataset("csv", data_files={"train": [f"train/bird_train.csv"]})
+data = data.map(
+    lambda samples: tokenizer(samples["train_example"]), batched=True
+)
 
 
 trainer = transformers.Trainer(
     model=model,
-    train_dataset=data['train'],
+    train_dataset=data["train"],
     args=transformers.TrainingArguments(
         per_device_train_batch_size=2,
         per_device_eval_batch_size=2,
@@ -104,14 +106,20 @@ trainer = transformers.Trainer(
         learning_rate=2e-4,
         fp16=True,
         logging_steps=1,
-        output_dir='outputs',
+        output_dir="outputs",
     ),
-    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+    data_collator=transformers.DataCollatorForLanguageModeling(
+        tokenizer, mlm=False
+    ),
 )
-model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
+model.config.use_cache = (
+    False  # silence the warnings. Please re-enable for inference!
+)
 trainer.train()
 
-model.push_to_hub("ruandocini/Mistral-7B-v0.3-sql",
-                  use_auth_token=True,
-                  commit_message="basic training",
-                  private=True)
+model.push_to_hub(
+    "ruandocini/Mistral-7B-v0.3-sql",
+    use_auth_token=True,
+    commit_message="basic training",
+    private=True,
+)
