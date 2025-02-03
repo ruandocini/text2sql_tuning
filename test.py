@@ -25,8 +25,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-model_name = "DeepSeek-R1-Distill-Qwen-7B-R1"
-raw_model = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
+model_name = "Qwen2.5-VL-3B-Instruct"
+raw_model = "Qwen/Qwen2.5-VL-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(
     raw_model, return_dict=True, load_in_4bit=True, device_map="auto"
