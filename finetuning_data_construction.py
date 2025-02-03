@@ -26,9 +26,9 @@ def tables_loader(specific_dataset: str) -> json:
         # data = pd.DataFrame(data)
         return data
 
-
+MAPPER_NAME = "rephrased_mapper.json"
 def mapper_loader() -> json:
-    with open(f"mapper_of_columns.json") as f:
+    with open(MAPPER_NAME) as f:
         data = json.load(f)
         # data = pd.DataFrame(data)
         return data

@@ -17,7 +17,6 @@ parser.add_argument("file", type=str)
 
 args = parser.parse_args()
 
-
 torch.cuda.empty_cache()
 
 # peft_model_id = "ruandocini/llama31-8b-lora-sql2"
@@ -25,8 +24,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-model_name = "codegemma-7b-it"
-raw_model = "google/codegemma-7b-it"
+model_name = "DeepSeek-R1-Distill-Qwen-7B-R1"
+raw_model = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(
     raw_model, return_dict=True, load_in_4bit=True, device_map="auto"
@@ -41,7 +40,7 @@ if tokenizer.pad_token is None:
 
 # batch = tokenizer(fixture(), return_tensors='pt')
 
-data = pd.read_csv(f"dev/{args.file}.csv")
+data = pd.read_csv(f"data_modified/{args.file}.csv")
 # data = data[data.index > 1018]
 # final_input = tokenizer(data["train_example"].tolist(), return_tensors='pt', padding=True).to("cuda")
 # raw_outputs = model.generate(**final_input, max_new_tokens=100)

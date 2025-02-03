@@ -1,4 +1,6 @@
-*.csv
+data
+dev
+# *.csv
 *.json
 *.DS_Store
 *.sqlite
