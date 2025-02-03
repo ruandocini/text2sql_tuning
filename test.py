@@ -25,8 +25,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-model_name = "Qwen2.5-VL-3B-Instruct"
-raw_model = "Qwen/Qwen2.5-VL-3B-Instruct"
+model_name = "Qwen2.5-7B-Instruct-1M"
+raw_model = "Qwen/Qwen2.5-7B-Instruct-1M"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(
     raw_model, return_dict=True, load_in_4bit=True, device_map="auto"
