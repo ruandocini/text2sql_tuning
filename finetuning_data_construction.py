@@ -132,7 +132,7 @@ def example_builder(
     question = f"QUESTION: {question.replace(evidence, "")}"
     generated_sql = f"CREATED SQL: {generated_sql}"
     file_end = "\nEND OF QUESTION"
-    command = "\nGenerate just the SQL code starting it with 'start_sql' and ending the sql with 'end_sql' nothing else is allowed on the response. Do not add any explanations or comments."
+    command = "\nGenerate just the SQL code starting it with 'sql_start' and ending the sql with 'sql_end' nothing else is allowed on the response. Do not add any explanations or comments. Just create the SQL code right away. SQL_START\n"
     # print(db+question+command)
     return db + question + command
 
