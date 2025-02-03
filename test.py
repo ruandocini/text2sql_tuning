@@ -1,3 +1,4 @@
+import os
 import time
 import torch
 from peft import PeftModel, PeftConfig
@@ -78,6 +79,9 @@ for batch in range((len(data) // batch_size) + 1):
     )
     # print({batch*batch_size+idx: f"{info[0]}\n\t----- bird -----\t{info[1]}" for idx, info in enumerate(zip(final_str,db))})
     print(f"Time taken: {time.time()-start}")
+    if not os.path.exists(f"predictions/{model_name}"):
+        os.makedirs(f"predictions/{model_name}")
+
     with open(
         f"predictions/{model_name}/predictions_{args.file}.json", "w"
     ) as f:
