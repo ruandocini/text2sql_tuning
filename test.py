@@ -61,7 +61,7 @@ for batch in range((len(data) // batch_size) + 1):
         return_tensors="pt",
         padding=True,
     ).to("cuda")
-    raw_outputs = model.generate(**final_input, max_new_tokens=100)
+    raw_outputs = model.generate(**final_input, max_new_tokens=400)
     decoded_outputs = tokenizer.batch_decode(
         raw_outputs.detach().cpu().numpy(), skip_special_tokens=True
     )
