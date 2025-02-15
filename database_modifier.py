@@ -1,3 +1,4 @@
+import argparse
 from distutils.dir_util import copy_tree
 import os
 import json
@@ -34,7 +35,7 @@ def alter_columns_names():
     for db in dev_databases:
         db_specfic_mapper = mapper[db]["tables"]
         conn = sqlite3.connect(
-            f"unified/bird/data/dev_databases_mod/{db}/{db}.sqlite"
+            f"data/bird/data/dev_databases_mod/{db}/{db}.sqlite"
         )
         cursor = conn.cursor()
         # print(db)
@@ -100,10 +101,10 @@ def alter_columns_names():
 
 
 copy_tree(
-    "unified/bird/data/dev_databases", "unified/bird/data/dev_databases_mod"
+    "data/bird/data/dev_databases", "data/bird/data/dev_databases_mod"
 )
 
-dev_databases = os.listdir("unified/bird/data/dev_databases_mod")
+dev_databases = os.listdir("data/bird/data/dev_databases_mod")
 
 ignored_files = [
     ".DS_Store",
@@ -121,13 +122,21 @@ ignored_files = [
     for file in ignored_files
 ]
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--mapper", type=str, help="Mapper file")
+parser.add_argument("--alter_columns", action="store_true", help="Alter columns")
+parser.add_argument("--alter_tables", action="store_true", help="Alter tables")
+args = parser.parse_args()
 
-mapper = json_loader("mapper_of_columns.json")
+MAPPER_PATH = args.mapper
+alter_columns = bool(args.alter_columns)
+alter_tables = bool(args.alter_tables)
+mapper = json_loader(MAPPER_PATH)
 
-original_dev_answers = json_loader("unified/bird/data/dev_databases/dev.json")
+original_dev_answers = json_loader("data/bird/data/dev_databases/dev.json")
 
-alter_columns = False
-alter_tables = True
+print(alter_columns)
+print(alter_tables)
 
 if alter_columns:
     print("Modifying columns")

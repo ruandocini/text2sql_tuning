@@ -6,7 +6,7 @@ from typing import Tuple, List
 import typer
 
 app = typer.Typer()
-
+# MAPPER_NAME = "mapper_of_columns.json"
 
 def questions_loader(specific_dataset: str) -> json:
     with open(f"data/{specific_dataset}/dev.jsonl") as f:
@@ -26,11 +26,9 @@ def tables_loader(specific_dataset: str) -> json:
         # data = pd.DataFrame(data)
         return data
 
-MAPPER_NAME = "rephrased_mapper.json"
-def mapper_loader() -> json:
-    with open(MAPPER_NAME) as f:
+def mapper_loader(mapper) -> json:
+    with open(mapper) as f:
         data = json.load(f)
-        # data = pd.DataFrame(data)
         return data
 
 
@@ -202,12 +200,13 @@ def map_benchmark(mapper: dict, tables: List[dict]) -> List[dict]:
     return new_tables
 
 
-def reconstruct(modification_type: list[str]):
+def reconstruct(modification_type: list[str], mapper_name: str):
     dataset = "bird"
     questions = questions_loader_bird(dataset)
     tables = tables_loader(dataset)
 
-    mapper = mapper_loader()
+    mapper = mapper_loader(mapper_name)
+    # print(mapper)
     mapped_tables = map_benchmark(mapper, tables)
 
     if "columns" in modification_type:
@@ -234,7 +233,7 @@ def reconstruct(modification_type: list[str]):
     else:
         csv_name = ""
 
-    print(csv_name)
+    # print(f"_{dataset}_{csv_name}.csv")
 
     builded_dataset.to_csv(
         f"data_modified/{dataset}_{csv_name}.csv", index=False
@@ -242,19 +241,16 @@ def reconstruct(modification_type: list[str]):
 
 
 @app.command()
-def reconstruct_default():
-    reconstruct([])
-
+def reconstruct_default(mapper: str = "mapper_of_columns.json"):
+    reconstruct([], mapper)
 
 @app.command()
 def reconstruct_broken_columns_and_tables():
     reconstruct(["columns", "tables"])
 
-
 @app.command()
-def reconstruct_columns_broken():
-    reconstruct(["columns"])
-
+def reconstruct_columns_broken(mapper: str = "mapper_of_columns.json"):
+    reconstruct(["columns"], mapper)
 
 @app.command()
 def reconstruct_tables_broken():

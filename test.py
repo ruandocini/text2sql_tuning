@@ -25,8 +25,8 @@ torch.cuda.empty_cache()
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map='auto')
 # tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-model_name = "Llama-3.1-8B-Instruct"
-raw_model = "meta-llama/Llama-3.1-8B-Instruct"
+model_name = "Llama-3.2-3B"
+raw_model = "meta-llama/Llama-3.2-3B"
 tokenizer = AutoTokenizer.from_pretrained(raw_model)
 model = AutoModelForCausalLM.from_pretrained(
     raw_model, return_dict=True, load_in_4bit=True, device_map="auto"

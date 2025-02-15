@@ -4,6 +4,7 @@ import argparse
 import sqlite3
 import multiprocessing as mp
 from func_timeout import func_timeout, FunctionTimedOut
+import os
 
 
 def load_json(dir):
@@ -155,7 +156,7 @@ def compute_acc_by_diff(exec_results, diff_json_path):
     )
 
 
-def print_data(score_lists, count_lists):
+def print_data(score_lists, count_lists, output_path):
     levels = ["simple", "moderate", "challenging", "total"]
     print("{:20} {:20} {:20} {:20} {:20}".format("", *levels))
     print("{:20} {:<20} {:<20} {:<20} {:<20}".format("count", *count_lists))
@@ -168,6 +169,20 @@ def print_data(score_lists, count_lists):
             "accuracy", *score_lists
         )
     )
+
+    # Save as JSON
+    data = {
+        "accuracy": {
+            "simple": score_lists[0],
+            "moderate": score_lists[1],
+            "challenging": score_lists[2],
+            "total": score_lists[3]
+        }
+    }
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w") as f:
+        json.dump(data, f)
 
 
 if __name__ == "__main__":
@@ -190,6 +205,7 @@ if __name__ == "__main__":
     args_parser.add_argument("--mode_predict", type=str, default="gpt")
     args_parser.add_argument("--difficulty", type=str, default="simple")
     args_parser.add_argument("--diff_json_path", type=str, default="")
+    args_parser.add_argument("--output_path", type=str, default="")
     args = args_parser.parse_args()
     exec_result = []
 
@@ -223,7 +239,7 @@ if __name__ == "__main__":
         compute_acc_by_diff(exec_result, args.diff_json_path)
     )
     score_lists = [simple_acc, moderate_acc, challenging_acc, acc]
-    print_data(score_lists, count_lists)
+    print_data(score_lists, count_lists, output_path=args.output_path)
     print(
         "==========================================================================================="
     )

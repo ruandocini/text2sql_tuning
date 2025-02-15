@@ -12,6 +12,7 @@ import logging
 import json
 import sqlite3
 from typing import List, Literal
+import argparse
 
 # Add this line to configure the default logger
 logging.basicConfig(
@@ -121,6 +122,7 @@ class Rephrase:
                             column_name=column, content=column_sample
                         )
                     )
+                    print("New column name: ", rephrased_column)
                     try:
                         # print(rephrased_column)
                         rephrased_column = json.loads(rephrased_column)[
@@ -129,7 +131,7 @@ class Rephrase:
                     except:
                         rephrased_column = column
 
-                    mapping[table].update({column: rephrased_column})
+                    mapping[table].update({column: rephrased_column+"_"+str(idx)})
                     # print(f"Ran algorithm for {idx} of {len(schema[table])} columns.")
             counter += 1
             logger.info(f"Rephrased {counter / len(schema.keys()) * 100:.2f}% of tables.")
@@ -146,7 +148,7 @@ class Rephrase:
 
         mapping = {}
 
-        for table in schema.keys():
+        for col_pos, table in enumerate(schema.keys()):
             with sqlite3.connect(database_dir) as conn:
                 cursor = conn.cursor()
                 cursor.execute(f"SELECT * FROM {table}")
@@ -164,22 +166,22 @@ class Rephrase:
                         ]
                     except:
                         rephrased_table = table
-                    mapping.update({table: rephrased_table})
+                    mapping.update({table: rephrased_table+str(col_pos)})
 
         return mapping
 
 
 if __name__ == "__main__":
-    # TODO: Testar o processo para mais de um banco de dados simultaneamente
-    database_dir = "data/bird/data/dev_databases/california_schools/california_schools.sqlite"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", type=str, help="LLM model name")
+    args = parser.parse_args()
 
     logger.info("Loading database mapper")
     with open("mapper_of_columns.json", "r") as file:
         mapper_of_columns = file.read()
         mapper_of_columns = json.loads(mapper_of_columns)
 
-
-    model = OllamaClient("llama3.2:3b")
+    model = OllamaClient(args.model)
     rephrase = Rephrase(model)
 
     dev_databases = [
@@ -204,7 +206,7 @@ if __name__ == "__main__":
         top_k_rows=20,
     )
 
-    with open("rephrased_mapper.json", "w") as file:
+    with open(f"rephrased_mapper.json", "w") as file:
         json.dump(new_mapper, file, indent=4)
 
     # print("Mapper before")
