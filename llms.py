@@ -80,4 +80,4 @@ class HuggingFaceClient(LLMClient):
         decoded_outputs = self.tokenizer.batch_decode(
             raw_outputs, skip_special_tokens=True
         )
-        return decoded_outputs
+        return decoded_outputs[0]
