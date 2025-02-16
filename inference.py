@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import argparse
-from llms import OllamaLLM
+from llms import OllamaClient, HuggingFaceClient
 import os
 import time
 import func_timeout
@@ -16,7 +16,8 @@ class Inference():
     def run_inference(self):
         data = pd.read_csv(f"{self.full_data_path}", sep=",")
         llm ={
-            "ollama": OllamaLLM(model=self.model, temperature=0.001, max_new_tokens=400)
+            "ollama": OllamaClient(model_name=self.model, temperature=0.001, max_new_tokens=400),
+            "huggingface": HuggingFaceClient(model_name=self.model, mode="auto")
         }[self.framework]
 
         obrigatory_markings = "\n\t----- bird -----\t"
@@ -28,7 +29,7 @@ class Inference():
 
             created_sql = None
             try:
-                created_sql = func_timeout.func_timeout(60, llm.invoke, args=(data.iloc[i]["train_example"],))
+                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(data.iloc[i]["train_example"],))
             except func_timeout.FunctionTimedOut:
                 print("Timeout occurred")
                 created_sql = None
@@ -58,8 +59,9 @@ if __name__ == "__main__":
     parser.add_argument("full_data_path", type=str)
     parser.add_argument("model", type=str)
     parser.add_argument("mode", type=str)
+    parser.add_argument("framework", type=str)
     args = parser.parse_args()
 
-    inference = Inference(args.full_data_path, args.model, args.mode, "ollama")
+    inference = Inference(args.full_data_path, args.model, args.mode, args.framework)
 
     inference.save_inference(inference.run_inference())

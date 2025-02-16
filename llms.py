@@ -31,24 +31,26 @@ class OpenAIClient(LLMClient):
 
 
 class OllamaClient(LLMClient):
-    def __init__(self, model_name="llama3.2:1b", logger=None, is_think_model=False):
+    def __init__(self, model_name="llama3.2:1b", logger=None, is_think_model=False, temperature=0.001, max_new_tokens=400):
         self.model_name = model_name
         self.client = OllamaLLM(model=model_name, temperature=0.001)
         self.logger = logger
         self.is_think_model = is_think_model
+        self.temperature = temperature
+        self.max_new_tokens = max_new_tokens
 
     def make_request(self, prompt):
         response = self.client.invoke(
             prompt,
         )
-        if self.is_think_model:
-            return self.post_processing_think_models(response)
-        return response
+        if "</think>" in response:
+            response = response.split("</think>")[1]
+            response = response.split("<think>")[0]
+        
+        response = response.strip().replace("\n", "")
     
-    def post_processing_think_models(self, response):
-        response = response.split("</think>")[1]
-        response = response.replace("```json", "").replace("```", "")
         return response
+
     
 class HuggingFaceClient(LLMClient):
     def __init__(self, model_name="meta-llama/Llama-3.2-3B", mode="auto"):

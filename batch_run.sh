@@ -12,9 +12,9 @@
 # pkill -f "$model"
 
 ## VERSAO QUE RODOU HJ
-model="llama3.2:1b"
+model="deepseek-r1:1.5b"
 osascript -e 'tell application "Terminal" to do script "ollama run \"'"$model"'\""'
-sleep 5
+sleep 1
 python inference.py "data_modified/bird_.csv" "$model" "default"
 python inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns"
 python rephrase.py --model "$model"
