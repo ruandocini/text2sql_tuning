@@ -27,9 +27,22 @@ class Inference():
         for i in range(len(data)):
             print(f"Processing {i} of {len(data)}")
 
+            response_model_prompt = """
+            /n
+            You must all the times respond with a json object with the key 'sql' and the value being the SQL query. 
+            The SQL query must be a string.
+            This is crucial for the evaluation of the model.
+            All the times you must return the SQL query in the following format:
+            {
+                "sql": "insert your SQL query here"
+            }
+
+            where the value of the key 'sql' is the SQL query generated.
+            """
+
             created_sql = None
             try:
-                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(data.iloc[i]["train_example"],))
+                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(data.iloc[i]["train_example"] + response_model_prompt,))
             except func_timeout.FunctionTimedOut:
                 print("Timeout occurred")
                 created_sql = None
