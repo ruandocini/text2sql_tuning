@@ -57,7 +57,7 @@ class HuggingFaceClient(LLMClient):
         device = "cuda:0" if torch.cuda.is_available() else "mps"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name, 
+            str(model_name), 
             return_dict=True,
         )
         if self.tokenizer.pad_token is None:
