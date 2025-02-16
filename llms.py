@@ -58,7 +58,7 @@ class HuggingFaceClient(LLMClient):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         print(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
-            str(model_name), 
+            pretrained_model_name_or_path=model_name,
             return_dict=True,
         )
         if self.tokenizer.pad_token is None:
