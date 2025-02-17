@@ -75,8 +75,14 @@ class Inference():
         number_of_batches = len(data) // self.batch_size
 
         for i in range(number_of_batches):
+            batch = [j+self.batch_size*i for j in range(1, self.batch_size+1) if j+self.batch_size*i]
+            filtered_batch = []
+            for ind in batch:
+                if ind < len(data):
+                    filtered_batch.append(ind)
+
             process_data(
-                idxs=[j+self.batch_size*i for j in range(1, self.batch_size+1) if j+self.batch_size*i < len(data)],
+                idxs=filtered_batch,
                 data=data
             )
 
