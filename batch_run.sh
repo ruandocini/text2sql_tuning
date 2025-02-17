@@ -12,16 +12,19 @@
 # pkill -f "$model"
 
 ## VERSAO QUE RODOU HJ
-model="qwen2.5-coder:14b"
+model="deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 # osascript -e 'tell application "Terminal" to do script "ollama run \"'"$model"'\""'
 # sleep 1
-python inference.py "data_modified/bird_.csv" "$model" "default"
-python inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns"
+# python inference.py "data_modified/bird_.csv" "$model" "default"
+python inference.py "data_modified/bird_.csv" "$model" "default" "huggingface" 13
+# python inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns"
+python inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns" "huggingface" 13
 # python rephrase.py --model "$model"
 # python finetuning_data_construction.py reconstruct-columns-broken --mapper "rephrased_mapper.json"
-python inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns"
-sleep 1
-pkill -f "$model"
+# python inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns"
+python inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns" "huggingface" 13
+# sleep 1
+# pkill -f "$model"
 
 # # Running the evaluation from the default version of the dataset
 # python database_modifier.py --mapper "rephrased_mapper.json"
