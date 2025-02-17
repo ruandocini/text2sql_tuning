@@ -5,6 +5,7 @@ from llms import OllamaClient, HuggingFaceClient
 import os
 import time
 import func_timeout
+from concurrent.futures import ThreadPoolExecutor
 
 class Inference():
     def __init__(self, full_data_path:str, model:str, mode:str, framework:str):
@@ -24,7 +25,7 @@ class Inference():
 
         inference_json = {}
 
-        for i in range(len(data)):
+        def process_data(i):
             print(f"Processing {i} of {len(data)}")
 
             response_model_prompt = """
@@ -56,6 +57,10 @@ class Inference():
             inference_json[i] = final_str
             print(final_str)
             db = data.iloc[i]["db_id"]
+
+        inference_json = {}
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            executor.map(process_data, range(len(data)))
 
         return inference_json
     
