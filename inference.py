@@ -25,8 +25,8 @@ class Inference():
 
         inference_json = {}
 
-        def process_data(idxs: List[int], data):
-            print(f"Processing {i} of {len(data)}", data)
+        def process_data(idxs: List[int], data: pd.DataFrame):
+            print(f"Processing {i} of {len(data)}")
 
             response_model_prompt = """
             /n
@@ -70,7 +70,10 @@ class Inference():
         number_of_batches = len(data) // batch_size
 
         for i in range(number_of_batches):
-            process_data([1+batch_size*i, 2+batch_size*i, 3+batch_size*i], data)
+            process_data(
+                idxs=[1+batch_size*i, 2+batch_size*i, 3+batch_size*i],
+                data=data
+            )
 
 
         return inference_json
