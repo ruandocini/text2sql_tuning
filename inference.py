@@ -35,6 +35,9 @@ class Inference():
                 "question": "Which is the highest mountain in the world?",
                 "sql_answer": "SELECT name FROM mountains WHERE height = (SELECT MAX(height) FROM mountains);"
             }
+
+            Use the above JSON output to generate the SQL query for the given question.
+            The generated json query is
             """
 
             created_sql = None
