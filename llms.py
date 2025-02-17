@@ -6,8 +6,6 @@ from transformers import (
     AutoTokenizer,
     BitsAndBytesConfig,
 )
-import torch._dynamo
-torch._dynamo.config.suppress_errors = True
 
 
 class LLMClient:
@@ -70,15 +68,13 @@ class HuggingFaceClient(LLMClient):
             pretrained_model_name_or_path=model_name,
             return_dict=True,
             quantization_config=bnb_config,
+            attn_implementation="flash_attention_2"
         )
         if self.tokenizer.pad_token is None:
             self.tokenizer.add_special_tokens({"pad_token": "[PAD]"})
             self.model.resize_token_embeddings(len(self.tokenizer))
         self.device = device
         self.model.to(device)
-
-        self.model.generation_config.cache_implementation = "static"
-        self.model.forward = torch.compile(self.model.forward, mode="reduce-overhead", fullgraph=True)
         
     def make_request(self, prompt):
         final_input = self.tokenizer(
