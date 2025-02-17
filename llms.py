@@ -84,9 +84,8 @@ class HuggingFaceClient(LLMClient):
             padding=True,
         )
          
-        final_input = {k: v.to(self.device) for k, v in final_input.items()}
+        # final_input = {k: v.to(self.device) for k, v in final_input.items()}
         raw_outputs = self.model.generate(**final_input, max_new_tokens=700)
-        raw_outputs = raw_outputs.to(self.device)
         decoded_outputs = self.tokenizer.batch_decode(
             raw_outputs, skip_special_tokens=True
         )
