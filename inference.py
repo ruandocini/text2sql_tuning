@@ -35,13 +35,10 @@ class Inference():
             /n
             EXAMPLE JSON OUTPUT:
 
-            {
-                "question": "Which is the highest mountain in the world?",
-                "__sql_answer": "SELECT name FROM mountains WHERE height = (SELECT MAX(height) FROM mountains);"
-            }
+            {"__sql_answer": "SELECT name FROM mountains WHERE height = (SELECT MAX(height) FROM mountains);"}
 
             Use the above JSON output to generate the SQL query for the given question.
-            { "question": 
+            {
             """
 
             local_inference = [
@@ -65,11 +62,12 @@ class Inference():
                 for sql, idx in zip(created_sql, idxs):
                     db = data.iloc[idx]["db_id"]
                     try:
-                        sql_fixed = sql.split('__sql_answer":"')[0]
+                        sql_fixed = sql.split('__sql_answer":"')[0].split('}"')[1]
                     except:
                         sql_fixed = ""
                     final_str =  sql_fixed + obrigatory_markings + db
                     inference_json[idx] = final_str
+                    print(idx)
                     print(sql_fixed)
 
         inference_json = {}
