@@ -8,11 +8,12 @@ import time
 import func_timeout
 
 class Inference():
-    def __init__(self, full_data_path:str, model:str, mode:str, framework:str):
+    def __init__(self, full_data_path:str, model:str, mode:str, framework:str, batch_size:int):
         self.full_data_path = full_data_path
         self.model = model
         self.mode = mode
         self.framework = framework
+        self.batch_size = batch_size
 
     def run_inference(self):
         data = pd.read_csv(f"{self.full_data_path}", sep=",")
@@ -66,12 +67,11 @@ class Inference():
         inference_json = {}
 
         #divide data into batches of 3
-        batch_size = 4
-        number_of_batches = len(data) // batch_size
+        number_of_batches = len(data) // self.batch_size
 
         for i in range(number_of_batches):
             process_data(
-                idxs=[1+batch_size*i, 2+batch_size*i, 3+batch_size*i],
+                idxs=[1+self.batch_size*i, 2+self.batch_size*i, 3+self.batch_size*i],
                 data=data
             )
 
@@ -92,8 +92,9 @@ if __name__ == "__main__":
     parser.add_argument("model", type=str)
     parser.add_argument("mode", type=str)
     parser.add_argument("framework", type=str)
+    parser.add_argument("batch_size", type=int)
     args = parser.parse_args()
 
-    inference = Inference(args.full_data_path, args.model, args.mode, args.framework)
+    inference = Inference(args.full_data_path, args.model, args.mode, args.framework, args.batch_size)
 
     inference.save_inference(inference.run_inference())
