@@ -65,7 +65,7 @@ class Inference():
                 for sql, idx in zip(created_sql, idxs):
                     db = data.iloc[idx]["db_id"]
                     try:
-                        sql_fixed = "{" + sql.split('__sql_answer":"')[0].split("}")[0] + "}"
+                        sql_fixed = sql.split('__sql_answer":"')[0]
                     except:
                         sql_fixed = ""
                     final_str =  sql_fixed + obrigatory_markings + db
