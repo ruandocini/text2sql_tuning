@@ -90,6 +90,8 @@ class HuggingFaceClient(LLMClient):
             raw_outputs, skip_special_tokens=True
         )
 
+        print(decoded_outputs)
+
         only_generated_ouput = [
             decoded_output.split(prompt)[1] for decoded_output in decoded_outputs
         ]
