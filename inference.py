@@ -41,7 +41,7 @@ class Inference():
             { "question": 
             """
 
-            data = [
+            local_inference = [
                 data.iloc[idxs[0]]["train_example"] + response_model_prompt,
                 data.iloc[idxs[1]]["train_example"] + response_model_prompt,
                 data.iloc[idxs[2]]["train_example"] + response_model_prompt
@@ -49,7 +49,7 @@ class Inference():
 
             created_sql = None
             try:
-                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(data,))
+                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(local_inference,))
             except func_timeout.FunctionTimedOut:
                 print("Timeout occurred")
                 created_sql = None
