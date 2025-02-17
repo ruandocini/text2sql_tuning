@@ -91,6 +91,6 @@ class HuggingFaceClient(LLMClient):
         )
 
         only_generated_ouput = [
-            ind_decoded_output.replace(ind_prompt,"") for ind_prompt, ind_decoded_output in zip(decoded_outputs, prompt)
+            ind_decoded_output.replace(ind_prompt,"") for ind_prompt, ind_decoded_output in zip(prompt, decoded_outputs)
         ]
         return only_generated_ouput
