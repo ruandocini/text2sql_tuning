@@ -46,9 +46,11 @@ class Inference():
                 for idx in idxs
             ]
 
+            start = time.time()
             created_sql = None
             try:
                 created_sql = func_timeout.func_timeout(120, llm.make_request, args=(local_inference,))
+                print(f"Time taken {time.time()-start}")
             except func_timeout.FunctionTimedOut:
                 print("Timeout occurred")
                 created_sql = None
