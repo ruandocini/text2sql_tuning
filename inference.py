@@ -33,11 +33,10 @@ class Inference():
             The SQL query must be a string.
             This is crucial for the evaluation of the model.
             All the times you must return the SQL query in the following format:
-            {
-                "sql": "insert your SQL query here"
-            }
+            {{"sql": "insert your SQL query here"}}
 
-            where the value of the key 'sql' is the SQL query generated.
+            Always this json object must have the key 'sql' and the value being the SQL query.
+            DO not submit the response in any other format.
             """
 
             created_sql = None
