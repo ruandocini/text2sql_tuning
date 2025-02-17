@@ -16,7 +16,7 @@ class Inference():
         self.batch_size = batch_size
 
     def run_inference(self):
-        data = pd.read_csv(f"{self.full_data_path}", sep=",")[0:15]
+        data = pd.read_csv(f"{self.full_data_path}", sep=",")
         llm ={
             "ollama": OllamaClient(model_name=self.model, temperature=0.001, max_new_tokens=400),
             "huggingface": HuggingFaceClient(model_name=self.model, mode="auto")
