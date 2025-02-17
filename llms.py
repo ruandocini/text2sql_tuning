@@ -4,6 +4,7 @@ import torch
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
+    BitsAndBytesConfig,
 )
 
 
@@ -54,12 +55,21 @@ class OllamaClient(LLMClient):
     
 class HuggingFaceClient(LLMClient):
     def __init__(self, model_name="meta-llama/Llama-3.2-3B", mode="auto"):
+
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            # bnb_4bit_use_double_quant=True,
+            # bnb_4bit_quant_type="nf4",
+            # bnb_4bit_compute_dtype=torch.bfloat16
+        )
+
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         print(device)
         self.model = AutoModelForCausalLM.from_pretrained(
             pretrained_model_name_or_path=model_name,
             return_dict=True,
+            
         )
         if self.tokenizer.pad_token is None:
             self.tokenizer.add_special_tokens({"pad_token": "[PAD]"})
