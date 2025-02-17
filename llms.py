@@ -6,6 +6,8 @@ from transformers import (
     AutoTokenizer,
     BitsAndBytesConfig,
 )
+import torch._dynamo
+torch._dynamo.config.suppress_errors = True
 
 
 class LLMClient:
