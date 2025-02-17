@@ -71,7 +71,7 @@ class Inference():
 
         for i in range(number_of_batches):
             process_data(
-                idxs=[1+self.batch_size*i, 2+self.batch_size*i, 3+self.batch_size*i],
+                idxs=[j+self.batch_size*i for j in range(1, self.batch_size+1)],
                 data=data
             )
 
