@@ -78,16 +78,14 @@ class Inference():
             batch = [j+self.batch_size*i for j in range(1, self.batch_size+1)]
             filtered_batch = []
             for ind in batch:
-                if ind < len(data):
-                    filtered_batch.append(ind)
-
-            print(filtered_batch)
+                if ind < len(data)-1:
+                    filtered_batch.append(ind)            
             
-
-            process_data(
-                idxs=filtered_batch,
-                data=data
-            )
+            if len(filtered_batch) > 0:
+                process_data(
+                    idxs=filtered_batch,
+                    data=data
+                )
 
 
         return inference_json
