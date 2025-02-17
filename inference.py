@@ -64,7 +64,7 @@ class Inference():
             else:
                 for sql, idx in zip(created_sql, idxs):
                     db = data.iloc[idx]["db_id"]
-                    sql_fixed = sql.split('__sql_answer":"')[0].split('"}')[0]
+                    sql_fixed = sql.split('__sql_answer":"')[0].split("}")[0]
                     final_str =  sql_fixed + obrigatory_markings + db
                     inference_json[idx] = final_str
                     print(final_str)
