@@ -72,7 +72,7 @@ class Inference():
 
         inference_json = {}
 
-        number_of_batches = len(data) // self.batch_size
+        number_of_batches = (len(data) // self.batch_size) + 1
 
         for i in range(number_of_batches):
             batch = [j+self.batch_size*i for j in range(1, self.batch_size+1) if j+self.batch_size*i]
