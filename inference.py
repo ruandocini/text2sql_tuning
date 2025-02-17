@@ -42,8 +42,8 @@ class Inference():
             """
 
             local_inference = [
-                data.iloc[idxs[i]]["train_example"] + response_model_prompt
-                for i in range(self.batch_size)
+                data.iloc[idx]["train_example"] + response_model_prompt
+                for idx in idxs
             ]
 
             created_sql = None
@@ -78,7 +78,7 @@ class Inference():
             batch = [j+self.batch_size*i for j in range(1, self.batch_size+1)]
             filtered_batch = []
             for ind in batch:
-                if ind < len(data)-1:
+                if ind < len(data):
                     filtered_batch.append(ind)            
             
             if len(filtered_batch) > 0:
