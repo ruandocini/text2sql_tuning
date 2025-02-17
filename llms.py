@@ -54,7 +54,7 @@ class OllamaClient(LLMClient):
 
     
 class HuggingFaceClient(LLMClient):
-    def __init__(self, model_name="meta-llama/Llama-3.2-3B", mode="auto"):
+    def __init__(self, model_name="meta-llama/Llama-3.2-3B", mode="auto", max_new_tokens=300):
 
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
@@ -75,6 +75,8 @@ class HuggingFaceClient(LLMClient):
             self.model.resize_token_embeddings(len(self.tokenizer))
         self.device = device
         self.model.to(device)
+
+        self.max_new_tokens = max_new_tokens
         
     def make_request(self, prompt):
         final_input = self.tokenizer(
@@ -83,7 +85,7 @@ class HuggingFaceClient(LLMClient):
             padding=True,
         ).to(self.device)
          
-        raw_outputs = self.model.generate(**final_input, max_new_tokens=300)
+        raw_outputs = self.model.generate(**final_input, max_new_tokens=self.max_new_tokens)
         decoded_outputs = self.tokenizer.batch_decode(
             raw_outputs, skip_special_tokens=True
         )
