@@ -94,3 +94,32 @@ class HuggingFaceClient(LLMClient):
             ind_decoded_output.replace(ind_prompt,"") for ind_prompt, ind_decoded_output in zip(prompt, decoded_outputs)
         ]
         return only_generated_ouput
+
+
+SIMPLE_PROMPT_COLUMN = """
+You are supplied with the content of a specific column from a database and its current name.
+This name is not representative, meaning it does not accurately describe the content of the column.
+You are tasked with rephrasing the name of the column to better reflect its content.
+Remember that this name should be simple and also descriptive.
+The current column name is: "{column_name}"
+The content of the column is as follows: "{content}"
+Your reponse should come in the following format:
+{{"rephrased_column_name": "new_column_name"}}
+The new name must be a contiguos string. No spaces or special characters in it.
+And only that, nothing more is accepted.
+Only generate one new name for per column.
+It is obligatory to responde with a json object. And only that.
+Respect the json format.
+A json is the answer all the times.
+"""
+SIMPLE_PROMPT_TABLE = """
+You are supplied with the content of a specific table from a database and its current name.
+This name is not representative, meaning it does not accurately describe the content of the table.
+You are tasked with rephrasing the name of the table to better reflect its content.
+Remember that this name should be simple and also descriptive.
+The current table name is: "{table_name}"
+The content of the talbe is as follows: "{content}"
+Your reponse should come in the following format:
+{{"rephrased_table_name": "new_table_name"}}
+And only that, nothing more is accepted.
+"""
