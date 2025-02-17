@@ -69,7 +69,7 @@ class HuggingFaceClient(LLMClient):
         self.model = AutoModelForCausalLM.from_pretrained(
             pretrained_model_name_or_path=model_name,
             return_dict=True,
-            
+            quantization_config=bnb_config,
         )
         if self.tokenizer.pad_token is None:
             self.tokenizer.add_special_tokens({"pad_token": "[PAD]"})
