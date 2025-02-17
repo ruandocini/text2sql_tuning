@@ -37,7 +37,7 @@ class Inference():
             }
 
             Use the above JSON output to generate the SQL query for the given question.
-            The generated json query is
+            { "question": 
             """
 
             created_sql = None
