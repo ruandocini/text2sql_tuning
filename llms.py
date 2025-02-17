@@ -82,7 +82,7 @@ class HuggingFaceClient(LLMClient):
             prompt,
             return_tensors="pt",
             padding=True,
-        )
+        ).to(self.device)
          
         # final_input = {k: v.to(self.device) for k, v in final_input.items()}
         raw_outputs = self.model.generate(**final_input, max_new_tokens=700)
