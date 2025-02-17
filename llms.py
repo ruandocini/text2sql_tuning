@@ -83,7 +83,7 @@ class HuggingFaceClient(LLMClient):
             padding=True,
         ).to(self.device)
          
-        raw_outputs = self.model.generate(**final_input, max_new_tokens=700)
+        raw_outputs = self.model.generate(**final_input, max_new_tokens=300)
         decoded_outputs = self.tokenizer.batch_decode(
             raw_outputs, skip_special_tokens=True
         )
