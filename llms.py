@@ -74,6 +74,9 @@ class HuggingFaceClient(LLMClient):
             self.model.resize_token_embeddings(len(self.tokenizer))
         self.device = device
         self.model.to(device)
+
+        self.model.generation_config.cache_implementation = "static"
+        self.model.forward = torch.compile(self.model.forward, mode="reduce-overhead", fullgraph=True)
         
     def make_request(self, prompt):
         final_input = self.tokenizer(
