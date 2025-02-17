@@ -55,7 +55,10 @@ class Inference():
                 created_sql = None
 
             if created_sql is None:
-                final_str = " " + obrigatory_markings + db
+                for idx in idxs:
+                    db = data.iloc[idx]["db_id"]
+                    final_str = " " + obrigatory_markings + db
+                    inference_json[idx] = final_str
             else:
                 for sql, idx in zip(created_sql, idxs):
                     db = data.iloc[idx]["db_id"]
@@ -65,7 +68,6 @@ class Inference():
 
         inference_json = {}
 
-        #divide data into batches of 3
         number_of_batches = len(data) // self.batch_size
 
         for i in range(number_of_batches):

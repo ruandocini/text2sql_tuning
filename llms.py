@@ -89,4 +89,8 @@ class HuggingFaceClient(LLMClient):
         decoded_outputs = self.tokenizer.batch_decode(
             raw_outputs, skip_special_tokens=True
         )
-        return decoded_outputs
+
+        only_generated_ouput = [
+            decoded_output.split(prompt)[1] for decoded_output in decoded_outputs
+        ]
+        return only_generated_ouput
