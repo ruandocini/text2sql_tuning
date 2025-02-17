@@ -29,14 +29,12 @@ class Inference():
 
             response_model_prompt = """
             /n
-            You must all the times respond with a json object with the key 'sql' and the value being the SQL query. 
-            The SQL query must be a string.
-            This is crucial for the evaluation of the model.
-            All the times you must return the SQL query in the following format:
-            {{"sql": "insert your SQL query here"}}
+            EXAMPLE JSON OUTPUT:
 
-            Always this json object must have the key 'sql' and the value being the SQL query.
-            DO not submit the response in any other format.
+            {
+                "question": "Which is the highest mountain in the world?",
+                "sql_answer": "SELECT name FROM mountains WHERE height = (SELECT MAX(height) FROM mountains);"
+            }
             """
 
             created_sql = None
