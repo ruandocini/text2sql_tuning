@@ -54,7 +54,7 @@ class OllamaClient(LLMClient):
     
 class HuggingFaceClient(LLMClient):
     def __init__(self, model_name="meta-llama/Llama-3.2-3B", mode="auto"):
-        device = "cuda:0" if torch.cuda.is_available() else "mps"
+        device = "cuda" if torch.cuda.is_available() else "cpu"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         print(device)
         self.model = AutoModelForCausalLM.from_pretrained(
