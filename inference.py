@@ -25,7 +25,7 @@ class Inference():
 
         inference_json = {}
 
-        def process_data(idxs: List[int]):
+        def process_data(idxs: List[int], data):
             print(f"Processing {i} of {len(data)}", data)
 
             response_model_prompt = """
