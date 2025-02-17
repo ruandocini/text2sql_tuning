@@ -12,7 +12,7 @@
 # pkill -f "$model"
 
 ## VERSAO QUE RODOU HJ
-model="deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+model="deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
 # osascript -e 'tell application "Terminal" to do script "ollama run \"'"$model"'\""'
 # sleep 1
 # python inference.py "data_modified/bird_.csv" "$model" "default"
