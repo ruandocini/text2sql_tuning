@@ -43,9 +43,8 @@ class Inference():
             """
 
             local_inference = [
-                data.iloc[idxs[0]]["train_example"] + response_model_prompt,
-                data.iloc[idxs[1]]["train_example"] + response_model_prompt,
-                data.iloc[idxs[2]]["train_example"] + response_model_prompt
+                data.iloc[idxs[i]]["train_example"] + response_model_prompt
+                for i in range(self.batch_size)
             ]
 
             created_sql = None
