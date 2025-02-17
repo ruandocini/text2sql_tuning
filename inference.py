@@ -1,11 +1,11 @@
 import json
+from typing import List
 import pandas as pd
 import argparse
 from llms import OllamaClient, HuggingFaceClient
 import os
 import time
 import func_timeout
-from concurrent.futures import ThreadPoolExecutor
 
 class Inference():
     def __init__(self, full_data_path:str, model:str, mode:str, framework:str):
@@ -25,7 +25,7 @@ class Inference():
 
         inference_json = {}
 
-        def process_data(i):
+        def process_data(idxs: List[int]):
             print(f"Processing {i} of {len(data)}")
 
             response_model_prompt = """
@@ -41,9 +41,15 @@ class Inference():
             { "question": 
             """
 
+            data = [
+                data.iloc[idxs[0]]["train_example"] + response_model_prompt,
+                data.iloc[idxs[1]]["train_example"] + response_model_prompt,
+                data.iloc[idxs[2]]["train_example"] + response_model_prompt
+            ]
+
             created_sql = None
             try:
-                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(data.iloc[i]["train_example"] + response_model_prompt,))
+                created_sql = func_timeout.func_timeout(60, llm.make_request, args=(data,))
             except func_timeout.FunctionTimedOut:
                 print("Timeout occurred")
                 created_sql = None
@@ -51,16 +57,21 @@ class Inference():
             if created_sql is None:
                 final_str = " " + obrigatory_markings + db
             else:
-                db = data.iloc[i]["db_id"]
-                final_str = created_sql.replace("sql_start", "").replace("sql_end", "").replace("```", "").replace("sql", "") + obrigatory_markings + db
-            
-            inference_json[i] = final_str
-            print(final_str)
-            db = data.iloc[i]["db_id"]
+                for sql, idx in zip(created_sql, idxs):
+                    db = data.iloc[idx]["db_id"]
+                    final_str = sql.replace("sql_start", "").replace("sql_end", "").replace("```", "").replace("sql", "") + obrigatory_markings + db
+                    inference_json[idx] = final_str
+                    print(final_str)
 
         inference_json = {}
-        with ThreadPoolExecutor(max_workers=3) as executor:
-            executor.map(process_data, range(len(data)))
+
+        #divide data into batches of 3
+        batch_size = 3
+        number_of_batches = len(data) // batch_size
+
+        for i in enumerate(number_of_batches):
+            process_data([1+batch_size*i, 2+batch_size*i, 3+batch_size*i])
+
 
         return inference_json
     
