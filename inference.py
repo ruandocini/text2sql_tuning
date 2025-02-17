@@ -30,12 +30,14 @@ class Inference():
             print(f"Processing {idxs[-1]} of {len(data)}")
 
             response_model_prompt = """
+            Create the SQL query for the given question. Pay attention in the schema of the database that is supplied to you.
+            It is crucial to the query creation.
             /n
             EXAMPLE JSON OUTPUT:
 
             {
                 "question": "Which is the highest mountain in the world?",
-                "sql_answer": "SELECT name FROM mountains WHERE height = (SELECT MAX(height) FROM mountains);"
+                "__sql_answer": "SELECT name FROM mountains WHERE height = (SELECT MAX(height) FROM mountains);"
             }
 
             Use the above JSON output to generate the SQL query for the given question.
@@ -62,7 +64,8 @@ class Inference():
             else:
                 for sql, idx in zip(created_sql, idxs):
                     db = data.iloc[idx]["db_id"]
-                    final_str = sql.replace("sql_start", "").replace("sql_end", "").replace("```", "").replace("sql", "") + obrigatory_markings + db
+                    sql_fixed = sql.split('__sql_answer":"')[1].split('"}')[0]
+                    final_str =  sql_fixed + obrigatory_markings + db
                     inference_json[idx] = final_str
                     print(final_str)
 
