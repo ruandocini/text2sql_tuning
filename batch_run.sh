@@ -12,21 +12,21 @@
 # pkill -f "$model"
 
 ## VERSAO QUE RODOU HJ
-model="deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
+model="deepseek-ai/DeepSeek-R1-Distill-Llama-70B"
 # osascript -e 'tell application "Terminal" to do script "ollama run \"'"$model"'\""'
 # sleep 1
 # python inference.py "data_modified/bird_.csv" "$model" "default"
-# python3 inference.py "data_modified/bird_.csv" "$model" "default" "huggingface" 4
+python3 inference.py "data_modified/bird_.csv" "$model" "default" "huggingface" 4
 # python inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns"
-# python3 inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns" "huggingface" 4
+python3 inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns" "huggingface" 4
 # python rephrase.py --model "$model"
 # python finetuning_data_construction.py reconstruct-columns-broken --mapper "rephrased_mapper.json"
 # python inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns"
-# python3 inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns" "huggingface" 4
+python3 inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns" "huggingface" 4
 # sleep 1
 # pkill -f "$model"
 
-# Running the evaluation from the default version of the dataset
+# # Running the evaluation from the default version of the dataset
 # python database_modifier.py --mapper "rephrased_mapper.json"
 # cp predictions/$model/inference_default.json data/bird/data/dev_databases_mod/predict_dev.json
 # ./run_evaluation.sh "predictions/$model/acc/default.json"
@@ -37,6 +37,6 @@ model="deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
 # ./run_evaluation.sh "predictions/$model/acc/broken_columns.json"
 
 # # Running the evaluation from the rephrased version of the dataset
-python database_modifier.py --mapper "rephrased_mapper_qwen2.5-code-14b.json" --alter_columns
-cp predictions/$model/inference_rephrased_columns.json data/bird/data/dev_databases_mod/predict_dev.json
-./run_evaluation.sh "predictions/$model/acc/rephrased_columns.json"
+# python database_modifier.py --mapper "rephrased_mapper.json" --alter_columns
+# cp predictions/$model/inference_rephrased_columns.json data/bird/data/dev_databases_mod/predict_dev.json
+# ./run_evaluation.sh "predictions/$model/acc/rephrased_columns.json"

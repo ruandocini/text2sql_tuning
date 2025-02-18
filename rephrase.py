@@ -13,6 +13,7 @@ import json
 import sqlite3
 from typing import List, Literal
 import argparse
+import random
 
 # Add this line to configure the default logger
 logging.basicConfig(
@@ -53,13 +54,14 @@ class Rephrase:
             for database in databases:
                 logging.info(f"Rephrasing columns for {database} database")
                 individual_database_mapper = {database: mapper[database]}
-                mapper[database]["columns"] = (
+                inference_result = (
                     self.rephrase_full_database_columns(
                         database=individual_database_mapper,
                         database_dir=f"{root_database_path}/{database}/{database}.sqlite",
                         top_k_rows=top_k_rows,
                     )[database]["columns"]
                 )
+                mapper[database]["columns"] = self.rephrase_post_process(inference_result)
 
             return mapper
 
@@ -169,6 +171,21 @@ class Rephrase:
                     mapping.update({table: rephrased_table})
 
         return mapping
+    
+    def rephrase_post_process(self, inference_result: dict) -> dict:
+        for table in inference_result.keys():
+            colum_cumulator = []
+            # print(inference_result[table])
+            for old_column_name, new_column_name in inference_result[table].items():
+                if new_column_name in colum_cumulator:
+                    random_number = random.randint(1, 100)
+                    new_column_name = f"{new_column_name}_{random_number}"
+                    inference_result[table][old_column_name] = new_column_name
+                else:
+                    inference_result[table][old_column_name] = new_column_name
+                colum_cumulator.append(new_column_name)
+
+        return inference_result
 
 
 if __name__ == "__main__":
