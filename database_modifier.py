@@ -33,6 +33,7 @@ def alter_table_names():
 
 def alter_columns_names():
     for db in dev_databases:
+        print(db)
         db_specfic_mapper = mapper[db]["tables"]
         conn = sqlite3.connect(
             f"data/bird/data/dev_databases_mod/{db}/{db}.sqlite"
@@ -97,7 +98,8 @@ def alter_columns_names():
 
             cursor.execute(f'SELECT * FROM "{table}"')
             columns = cursor.fetchall()
-            # print(columns)
+            column_names = [column[0] for column in cursor.description]
+            # print(column_names)
 
 
 copy_tree(
@@ -135,6 +137,7 @@ mapper = json_loader(MAPPER_PATH)
 
 original_dev_answers = json_loader("data/bird/data/dev_databases/dev.json")
 
+# print(mapper)
 print(alter_columns)
 print(alter_tables)
 

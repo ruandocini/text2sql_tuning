@@ -131,7 +131,7 @@ class Rephrase:
                     except:
                         rephrased_column = column
 
-                    mapping[table].update({column: rephrased_column+"_"+str(idx)})
+                    mapping[table].update({column: rephrased_column})
                     # print(f"Ran algorithm for {idx} of {len(schema[table])} columns.")
             counter += 1
             logger.info(f"Rephrased {counter / len(schema.keys()) * 100:.2f}% of tables.")
@@ -166,7 +166,7 @@ class Rephrase:
                         ]
                     except:
                         rephrased_table = table
-                    mapping.update({table: rephrased_table+str(col_pos)})
+                    mapping.update({table: rephrased_table})
 
         return mapping
 

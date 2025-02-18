@@ -35,8 +35,9 @@ def execute_sql(predicted_sql, ground_truth, db_path):
     except Exception as e:
         # print("Não foi possível executar a query")
         print("---------------------------------------------------")
-        print(normal_db_path)
+        print(db_path)
         print(e)
+        print(predicted_sql)
         print("---------------------------------------------------")
 
     res = 0
@@ -182,7 +183,7 @@ def print_data(score_lists, count_lists, output_path):
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 
 if __name__ == "__main__":
