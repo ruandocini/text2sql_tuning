@@ -16,13 +16,13 @@ model="Qwen/Qwen2.5-7B-Instruct"
 # osascript -e 'tell application "Terminal" to do script "ollama run \"'"$model"'\""'
 # sleep 1
 # python inference.py "data_modified/bird_.csv" "$model" "default"
-python3 inference.py "data_modified/bird_.csv" "$model" "default" "huggingface" 13
+python3 inference.py "data_modified/bird_.csv" "$model" "default" "huggingface" 12
 # python inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns"
-python3 inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns" "huggingface" 13
+python3 inference.py "data_modified/bird_broken_columns_raw.csv" "$model" "broken_columns" "huggingface" 12
 # python rephrase.py --model "$model"
 # python finetuning_data_construction.py reconstruct-columns-broken --mapper "rephrased_mapper.json"
 # python inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns"
-python3 inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b.csv" "$model" "rephrased_columns" "huggingface" 13
+python3 inference.py "data_modified/bird_rephrased_columns_qwen2.5-code-14b-basic.csv" "$model" "rephrased_columns" "huggingface" 12
 # sleep 1
 # pkill -f "$model"
 
