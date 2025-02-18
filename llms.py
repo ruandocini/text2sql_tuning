@@ -75,6 +75,7 @@ class HuggingFaceClient(LLMClient):
             self.model.resize_token_embeddings(len(self.tokenizer))
         self.device = device
         self.model.to(device)
+        self.tokenizer.padding_side = "left"
 
         self.max_new_tokens = max_new_tokens
         
