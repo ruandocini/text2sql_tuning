@@ -103,14 +103,14 @@ You are tasked with rephrasing the name of the column to better reflect its cont
 Remember that this name should be simple and also descriptive.
 The current column name is: "{column_name}"
 The content of the column is as follows: "{content}"
-Your reponse should come in the following format:
+Your response should come in the following format:
 {{"rephrased_column_name": "new_column_name"}}
-The new name must be a contiguos string. No spaces or special characters in it.
+The new name must be a contiguous string. No spaces or special characters in it.
 And only that, nothing more is accepted.
-Only generate one new name for per column.
-It is obligatory to responde with a json object. And only that.
-Respect the json format.
-A json is the answer all the times.
+Only generate one new name per column.
+It is obligatory to respond with a JSON object. And only that.
+Respect the JSON format.
+A JSON has only one {{ in the beginning and one }} in the end.
 """
 SIMPLE_PROMPT_TABLE = """
 You are supplied with the content of a specific table from a database and its current name.

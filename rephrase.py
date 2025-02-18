@@ -14,6 +14,7 @@ import sqlite3
 from typing import List, Literal
 import argparse
 import random
+from func_timeout import func_timeout, FunctionTimedOut
 
 # Add this line to configure the default logger
 logging.basicConfig(
@@ -119,11 +120,10 @@ class Rephrase:
                     column_sample = [
                         content[idx] for content in database_content
                     ][0:top_k_rows]
-                    rephrased_column = self.model.make_request(
-                        SIMPLE_PROMPT_COLUMN.format(
-                            column_name=column, content=column_sample
-                        )
-                    )
+                    try:
+                        rephrased_column = func_timeout(60, self.model.make_request, args=(SIMPLE_PROMPT_COLUMN.format(column_name=column, content=column_sample),))
+                    except FunctionTimedOut:
+                        rephrased_column = column
                     print("New column name: ", rephrased_column)
                     try:
                         # print(rephrased_column)
